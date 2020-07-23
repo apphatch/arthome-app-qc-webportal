@@ -6,7 +6,8 @@ import {
   IMPORT_CHECKLISTS_SUCCESS,
   IMPORT_CHECKLIST_ITEMS_SUCCESS,
   EDIT_USER_SUCCESS,
-  IMPORT_USERS_SUCCESS
+  IMPORT_USERS_SUCCESS,
+  GET_LIST_CHECKIN_CHECKOUT_SUCCESS,
 } from './constants';
 import authActions from '../../auth/redux/actions';
 
@@ -95,7 +96,7 @@ const lockUser = userId => {
         console.log(error);
       });
   };
-}
+};
 
 const unlockUser = userId => {
   return dispatch => {
@@ -109,7 +110,7 @@ const unlockUser = userId => {
         console.log(error);
       });
   };
-}
+};
 
 const uploadUsers = data => {
   return dispatch => {
@@ -123,7 +124,21 @@ const uploadUsers = data => {
         console.log(error);
       });
   };
-}
+};
+
+const getCheckInCheckOut = () => {
+  return dispatch => {
+    return api
+      .get('checkin_checkouts')
+      .then(res => {
+        dispatch(success(GET_LIST_CHECKIN_CHECKOUT_SUCCESS, res.data));
+        console.log(res);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+};
 
 const homeActions = {
   getListUsers,
@@ -134,6 +149,7 @@ const homeActions = {
   lockUser,
   unlockUser,
   uploadUsers,
+  getCheckInCheckOut,
 };
 
 export default homeActions;

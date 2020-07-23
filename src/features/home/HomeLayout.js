@@ -7,6 +7,8 @@ import {
   UserOutlined,
   UploadOutlined,
   LogoutOutlined,
+  ImportOutlined,
+  ExportOutlined,
 } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
@@ -36,7 +38,10 @@ const HomeLayout = ({ children, dispatch }) => {
           <Menu.Item key="2" icon={<UploadOutlined />} onClick={() => history.push('/upload')}>
             Upload
           </Menu.Item>
-          <Menu.Item key="3" icon={<LogoutOutlined />} onClick={logout}>
+          <Menu.Item key="3" icon={<ImportOutlined />} onClick={() => history.push('/cico')}>
+            Checkin/Checkout
+          </Menu.Item>
+          <Menu.Item key="4" icon={<LogoutOutlined />} onClick={logout}>
             Logout
           </Menu.Item>
         </Menu>
