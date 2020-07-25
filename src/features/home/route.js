@@ -1,12 +1,13 @@
-import { HomeLayout, Dashboard, UploadLayout, CheckInCheckOutLayout } from '.';
+import { HomeLayout, Dashboard, UploadLayout, CheckInCheckOutLayout, DownloadLayout } from '.';
 
 export default {
   path: '',
   component: HomeLayout,
   role: 'privated',
   childRoutes: [
-    { path: 'dashboard', component: Dashboard, isIndex: true, role: 'privated' },
-    { path: 'upload', component: UploadLayout, role: 'privated' },
-    { path: 'cico', component: CheckInCheckOutLayout, role: 'privated' },
+    { path: 'dashboard', component: Dashboard, isIndex: true },
+    { path: 'upload', component: UploadLayout },
+    { path: 'cico', component: CheckInCheckOutLayout },
+    { path: 'download', component: DownloadLayout },
   ],
 };
