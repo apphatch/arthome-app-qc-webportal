@@ -63,6 +63,7 @@ const register = data => {
       .post('users', data)
       .then(res => {
         console.log(res);
+        dispatch(updateAuthorization(res.headers));
       })
       .catch(error => {
         console.log(error.response);
@@ -76,6 +77,7 @@ const getUserDetails = () => {
       .get('users')
       .then(res => {
         console.log(res);
+        dispatch(updateAuthorization(res.headers));
       })
       .catch(error => {
         console.log(error.response);

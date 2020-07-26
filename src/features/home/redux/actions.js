@@ -23,7 +23,7 @@ const getListUsers = () => {
       .catch(error => {
         const { status } = error.response;
         if (status === 401) {
-          dispatch(authActions.logout());
+          // dispatch(authActions.logout());
         }
       });
   };
