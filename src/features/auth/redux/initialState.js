@@ -1,5 +1,8 @@
 const initialState = {
-  token: "",
+  headers: {
+    Authorization: '',
+    'X-CSRF-Token': ''
+  },
   user: {}
 };
 

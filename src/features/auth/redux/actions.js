@@ -5,16 +5,23 @@ import {
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGIN_FAILURE,
   AUTH_LOGOUT,
+  UPDATE_AUTH_HEADERS,
 } from './constants';
 import history from '../../../common/history';
 
 const login = data => {
   return dispatch => {
     dispatch(request(AUTH_LOGIN_REQUEST));
-    return api
+    return api()
       .post('login', data)
       .then(res => {
-        const data = { user: res.data, token: res.headers['x-csrf-token'] };
+        const data = {
+          user: res.data,
+          headers: {
+            Authorization: res.headers['authorization'],
+            'X-CSRF-Token': res.headers['x-csrf-token'],
+          },
+        };
         dispatch(success(AUTH_LOGIN_SUCCESS, data));
         history.go('/');
       })
@@ -24,9 +31,15 @@ const login = data => {
   };
 };
 
+const updateAuthorization = headers => {
+  return dispatch => {
+    dispatch(success(UPDATE_AUTH_HEADERS, headers['authorization']));
+  };
+};
+
 const logout = () => {
   return dispatch => {
-    return api
+    return api()
       .get('logout')
       .then(res => {
         console.log(res);
@@ -46,10 +59,11 @@ const logout = () => {
 
 const register = data => {
   return dispatch => {
-    return api
+    return api()
       .post('users', data)
       .then(res => {
         console.log(res);
+        dispatch(updateAuthorization(res.headers));
       })
       .catch(error => {
         console.log(error.response);
@@ -59,10 +73,11 @@ const register = data => {
 
 const getUserDetails = () => {
   return dispatch => {
-    return api
+    return api()
       .get('users')
       .then(res => {
         console.log(res);
+        dispatch(updateAuthorization(res.headers));
       })
       .catch(error => {
         console.log(error.response);
@@ -75,6 +90,7 @@ const authActions = {
   logout,
   register,
   getUserDetails,
+  updateAuthorization,
 };
 
 export default authActions;

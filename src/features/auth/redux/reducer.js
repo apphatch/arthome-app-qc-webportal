@@ -4,7 +4,8 @@ import {
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
-} from "./constants";
+  UPDATE_AUTH_HEADERS,
+} from './constants';
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -27,6 +28,14 @@ const reducer = (state = initialState, action) => {
         isFetching: false,
         loggedIn: false,
         errorMessage: action.payload.statusText,
+      };
+    case UPDATE_AUTH_HEADERS:
+      return {
+        ...state,
+        headers: {
+          ...state.headers,
+          Authorization: action.payload,
+        },
       };
 
     case AUTH_LOGOUT:

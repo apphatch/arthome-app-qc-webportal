@@ -45,12 +45,16 @@ const Dashboard = ({ dispatch, home }) => {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <Button type="link" onClick={() => lockUser(record.id)}>
-            Lock
-          </Button>
-          <Button type="link" onClick={() => unlockUser(record.id)}>
-            Unlock
-          </Button>
+          {record.locked ? (
+            <Button type="link" onClick={() => unlockUser(record.id)}>
+              Unlock
+            </Button>
+          ) : (
+            <Button type="link" onClick={() => lockUser(record.id)}>
+              Lock
+            </Button>
+          )}
+
           <Button type="link" onClick={() => showModal(record)}>
             Edit
           </Button>

@@ -1,39 +1,30 @@
 import axios from 'axios';
+import store from './store';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const axiosConfiguration = () => {
-  let headerParams;
+const api = () => {
   const root = JSON.parse(localStorage.getItem('persist:root'));
-  let auth, token;
-  if (root) {
-    auth = root.auth
-    if (auth) {
-      token = JSON.parse(auth).token;
+  const { auth } = store.getState();
+  let headers;
+  if (auth.headers.Authorization !== '') {
+    headers = auth.headers;
+  } else {
+    if (root) {
+      headers = JSON.parse(root.auth).headers;
     }
   }
 
-  if (token !== '') {
-    headerParams = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'X-CSRF-Token': token,
-    };
-  } else {
-    headerParams = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    };
-  }
+  console.log(headers);
 
   const api = axios.create({
     baseURL: apiUrl,
     timeout: 10000,
-    headers: headerParams,
-    withCredentials: true
+    headers,
+    withCredentials: true,
   });
 
   return api;
 };
 
-export default axiosConfiguration();
+export default api;
