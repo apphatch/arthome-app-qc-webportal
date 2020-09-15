@@ -15,6 +15,10 @@ const UploadLayout = ({ dispatch }) => {
   const [itemListUploading, setItemListUploading] = React.useState(false);
   const [userList, setUserList] = React.useState([]);
   const [userListUploading, setUserListUploading] = React.useState(false);
+  const [shopList, setShopList] = React.useState([]);
+  const [shopListUploading, setShopListUploading] = React.useState(false);
+  const [photoList, setPhotoList] = React.useState([]);
+  const [photoListUploading, setPhotoListUploading] = React.useState(false);
 
   const handleUpload = type => {
     if (type === 'stock') {
@@ -60,12 +64,131 @@ const UploadLayout = ({ dispatch }) => {
         setUserListUploading(false);
       });
     }
+
+    if (type === 'shop') {
+      const formData = new FormData();
+      userList.forEach(file => {
+        formData.append('files[]', file);
+      });
+      setShopListUploading(true);
+      dispatch(homeActions.uploadShops(formData)).then(res => {
+        setShopListUploading(false);
+      });
+    }
+  };
+
+  const handleTemplate = type => {
+    if (type === 'stock') {
+      dispatch(homeActions.downloadStockTemplate());
+    }
+
+    if (type === 'checklist') {
+      dispatch(homeActions.downloadCheckListTemplate());
+    }
+
+    if (type === 'item') {
+      dispatch(homeActions.downloadChecklistItemsTemplate());
+    }
+
+    if (type === 'user') {
+      dispatch(homeActions.downloadUserTemplate());
+    }
+
+    if (type === 'shop') {
+      dispatch(homeActions.downloadShopTemplate());
+    }
   };
 
   return (
     <Row>
       <Col span={24}>
         <Card title="Upload" bordered={false} style={{ width: '100%' }}>
+          <Row>
+            <Col span={4}>
+              <p>Upload users</p>
+            </Col>
+            <Col span={8}>
+              <Upload
+                onRemove={file => {
+                  const index = userList.indexOf(file);
+                  const newFileList = userList.slice();
+                  newFileList.splice(index, 1);
+                  setUserList(newFileList);
+                }}
+                beforeUpload={file => {
+                  setUserList([...userList, file]);
+                  return false;
+                }}
+                fileList={userList}
+              >
+                <Button block>
+                  <UploadOutlined /> Select file
+                </Button>
+              </Upload>
+            </Col>
+            <Col span={3}>
+              <Button
+                type="primary"
+                onClick={() => handleUpload('user')}
+                disabled={userList.length === 0}
+                loading={userListUploading}
+              >
+                {userListUploading ? 'Uploading' : 'Start Upload'}
+              </Button>
+            </Col>
+            <Col span={3}>
+              <Button
+                type="primary"
+                onClick={() => handleTemplate('user')}
+                loading={userListUploading}
+              >
+                {'Template'}
+              </Button>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={4}>
+              <p>Upload shops</p>
+            </Col>
+            <Col span={8}>
+              <Upload
+                onRemove={file => {
+                  const index = shopList.indexOf(file);
+                  const newFileList = shopList.slice();
+                  newFileList.splice(index, 1);
+                  setShopList(newFileList);
+                }}
+                beforeUpload={file => {
+                  setShopList([...shopList, file]);
+                  return false;
+                }}
+                fileList={shopList}
+              >
+                <Button block>
+                  <UploadOutlined /> Select file
+                </Button>
+              </Upload>
+            </Col>
+            <Col span={3}>
+              <Button
+                type="primary"
+                onClick={() => handleUpload('shop')}
+                disabled={shopList.length === 0}
+                loading={shopListUploading}
+              >
+                {shopListUploading ? 'Uploading' : 'Start Upload'}
+              </Button>
+            </Col>
+            <Col span={3}>
+              <Button
+                type="primary"
+                onClick={() => handleTemplate('shop')}
+                loading={shopListUploading}
+              >
+                {'Template'}
+              </Button>
+            </Col>
+          </Row>
           <Row>
             <Col span={4}>
               <p>Upload stock</p>
@@ -89,7 +212,7 @@ const UploadLayout = ({ dispatch }) => {
                 </Button>
               </Upload>
             </Col>
-            <Col span={6}>
+            <Col span={3}>
               <Button
                 type="primary"
                 onClick={() => handleUpload('stock')}
@@ -97,6 +220,15 @@ const UploadLayout = ({ dispatch }) => {
                 loading={stockUploading}
               >
                 {stockUploading ? 'Uploading' : 'Start Upload'}
+              </Button>
+            </Col>
+            <Col span={3}>
+              <Button
+                type="primary"
+                onClick={() => handleTemplate('stock')}
+                loading={stockUploading}
+              >
+                {'Template'}
               </Button>
             </Col>
           </Row>
@@ -123,7 +255,7 @@ const UploadLayout = ({ dispatch }) => {
                 </Button>
               </Upload>
             </Col>
-            <Col span={6}>
+            <Col span={3}>
               <Button
                 type="primary"
                 onClick={() => handleUpload('checklist')}
@@ -131,6 +263,15 @@ const UploadLayout = ({ dispatch }) => {
                 loading={checkListUploading}
               >
                 {checkListUploading ? 'Uploading' : 'Start Upload'}
+              </Button>
+            </Col>
+            <Col span={3}>
+              <Button
+                type="primary"
+                onClick={() => handleTemplate('checklist')}
+                loading={checkListUploading}
+              >
+                {'Template'}
               </Button>
             </Col>
           </Row>
@@ -157,7 +298,7 @@ const UploadLayout = ({ dispatch }) => {
                 </Button>
               </Upload>
             </Col>
-            <Col span={6}>
+            <Col span={3}>
               <Button
                 type="primary"
                 onClick={() => handleUpload('item')}
@@ -167,38 +308,50 @@ const UploadLayout = ({ dispatch }) => {
                 {itemListUploading ? 'Uploading' : 'Start Upload'}
               </Button>
             </Col>
+            <Col span={3}>
+              <Button
+                type="primary"
+                onClick={() => handleTemplate('item')}
+                loading={itemListUploading}
+              >
+                {'Template'}
+              </Button>
+            </Col>
           </Row>
           <Row>
             <Col span={4}>
-              <p>Upload users</p>
+              <p>Upload photos</p>
             </Col>
             <Col span={8}>
               <Upload
                 onRemove={file => {
-                  const index = userList.indexOf(file);
-                  const newFileList = userList.slice();
+                  const index = photoList.indexOf(file);
+                  const newFileList = photoList.slice();
                   newFileList.splice(index, 1);
-                  setUserList(newFileList);
+                  setPhotoList(newFileList);
                 }}
-                beforeUpload={file => {
-                  setUserList([...userList, file]);
+                beforeUpload={(file, fileList) => {
+                  const newList = photoList.concat(fileList);
+                  setPhotoList(newList);
                   return false;
                 }}
-                fileList={userList}
+                fileList={photoList}
+                directory
+                listType="picture"
               >
                 <Button block>
                   <UploadOutlined /> Select file
                 </Button>
               </Upload>
             </Col>
-            <Col span={6}>
+            <Col span={3}>
               <Button
                 type="primary"
-                onClick={() => handleUpload('user')}
-                disabled={userList.length === 0}
-                loading={userListUploading}
+                onClick={() => handleUpload('photos')}
+                disabled={photoList.length === 0}
+                loading={photoListUploading}
               >
-                {userListUploading ? 'Uploading' : 'Start Upload'}
+                {photoListUploading ? 'Uploading' : 'Start Upload'}
               </Button>
             </Col>
           </Row>

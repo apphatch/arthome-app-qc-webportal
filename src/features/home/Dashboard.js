@@ -13,8 +13,9 @@ const layout = {
 };
 
 const Dashboard = ({ dispatch, home }) => {
-  const [visible, setVisible] = React.useState(false);
   const [form] = Form.useForm();
+
+  const [visible, setVisible] = React.useState(false);
   const [titleForm, setTitleForm] = React.useState('Add User');
   const [userId, setUserId] = React.useState();
   const [formFields, setFormFields] = React.useState([
@@ -99,15 +100,22 @@ const Dashboard = ({ dispatch, home }) => {
 
   const onEditUser = values => {
     const newValues = _.pickBy(values, v => v !== '');
-    dispatch(homeActions.editUser(userId, newValues));
+    dispatch(homeActions.editUser(userId, newValues)).then(res => {
+      handleCancel();
+      dispatch(homeActions.getListUsers());
+    });
   };
 
   const lockUser = userId => {
-    dispatch(homeActions.lockUser(userId));
+    dispatch(homeActions.lockUser(userId)).then(res => {
+      dispatch(homeActions.getListUsers());
+    });
   };
 
   const unlockUser = userId => {
-    dispatch(homeActions.unlockUser(userId));
+    dispatch(homeActions.unlockUser(userId)).then(res => {
+      dispatch(homeActions.getListUsers());
+    });
   };
 
   return (
@@ -134,7 +142,6 @@ const Dashboard = ({ dispatch, home }) => {
               form
                 .validateFields()
                 .then(values => {
-                  console.log(values);
                   if (titleForm === 'Add User') {
                     form.resetFields();
                     onAddUser(values);
@@ -152,9 +159,6 @@ const Dashboard = ({ dispatch, home }) => {
               form={form}
               initialValues={{ modifier: 'public' }}
               fields={formFields}
-              onFieldsChange={(changedFields, allFields) => {
-                setFormFields(allFields);
-              }}
             >
               <Form.Item
                 label="Name"

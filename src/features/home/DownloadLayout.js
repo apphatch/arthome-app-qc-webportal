@@ -1,12 +1,13 @@
 import React from 'react';
 import _ from 'lodash';
 
-import { Row, Col, Card, Form, Select, Button, DatePicker } from 'antd';
+import { Row, Col, Card, Form, Select, Button, DatePicker, Input } from 'antd';
 
 import { connect } from 'react-redux';
 import homeActions from './redux/actions';
 
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const layout = {
   labelCol: { span: 4 },
@@ -20,10 +21,6 @@ const DownloadLayout = ({ dispatch, home }) => {
   const { listCheckInCheckOut } = home;
 
   const formRef = React.createRef();
-
-  const onChange = (date, dateString) => {
-    console.log(date, dateString);
-  };
 
   const onFinish = values => {
     console.log(values);
@@ -52,37 +49,35 @@ const DownloadLayout = ({ dispatch, home }) => {
               ]}
             >
               <Select placeholder="Select a option you want to download" allowClear>
-                <Option value="stock">Stock</Option>
-                <Option value="checklist">Check list</Option>
-                <Option value="users">Users</Option>
+                <Option value="oos">oos</Option>
+                <Option value="sos">sos</Option>
+                <Option value="osa">osa</Option>
+                <Option value="weekend">weekend</Option>
+                <Option value="promotions">promotions</Option>
+                <Option value="rental">rental</Option>
+                <Option value="npd">npd</Option>
               </Select>
             </Form.Item>
             <Form.Item
               name="date"
               label="Date"
-              rules={[
-                {
-                  required: true,
-                },
-              ]}
+              rules={[{ type: 'array', required: true, message: 'Please select time!' }]}
             >
-              <DatePicker style={{ width: '100%' }} onChange={onChange} />
+              <RangePicker style={{ width: '100%' }} format="DD-MM-YYYY" />
             </Form.Item>
             <Form.Item
-              name="category"
-              label="Category"
+              name="yearweek"
+              label="Yearweek"
               rules={[
                 {
                   required: true,
                 },
               ]}
             >
-              <Select placeholder="Select a category" allowClear>
-                <Option value="yearweek">Yearweek</Option>
-              </Select>
+              <Input placeholder="yearweek" />
             </Form.Item>
             <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit" style={{marginRight: "10px"}}>
+              <Button type="primary" htmlType="submit" style={{ marginRight: '10px' }}>
                 Submit
               </Button>
               <Button htmlType="button" onClick={onReset}>

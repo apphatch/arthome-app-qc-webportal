@@ -3,7 +3,7 @@ import store from './store';
 
 const apiUrl = process.env.REACT_APP_API_URL;
 
-const api = () => {
+const api = contentType => {
   const root = JSON.parse(localStorage.getItem('persist:root'));
   const { auth } = store.getState();
   let headers;
@@ -15,7 +15,10 @@ const api = () => {
     }
   }
 
-  console.log(headers);
+  headers.App = 'qc-webportal';
+  if (contentType) {
+    headers['Content-Type'] = contentType;
+  }
 
   const api = axios.create({
     baseURL: apiUrl,

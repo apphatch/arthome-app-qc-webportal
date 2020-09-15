@@ -1,8 +1,8 @@
-# Arthome QC webportal
+# webportal
 
 ## Getting Started
 
-Run `npm install` and then `npm start`.
+Run `yarn install` and then `yarn start`.
 
 ## VS Code Plugins
 
