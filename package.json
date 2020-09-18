@@ -127,5 +127,9 @@
       "jsx",
       "node"
     ]
+  },
+  "devDependencies": {
+    "git-cz": "^4.7.1",
+    "husky": "^4.3.0"
   }
 }
