@@ -25,3 +25,17 @@ export const errors = () => {
     };
   });
 };
+
+export const users = () => {
+  return Array.from({ length: 20 }, (_, key) => {
+    return {
+      id: faker.random.uuid(),
+      no: key + 1,
+      fullName: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      username: `${faker.internet.userName()}`,
+      address: faker.address.secondaryAddress(),
+      district: faker.address.state(),
+      phoneNumber: faker.phone.phoneNumber(),
+    };
+  });
+};

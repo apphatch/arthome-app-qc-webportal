@@ -1,6 +1,7 @@
-import { HomeLayout, Dashboard, UploadLayout, CheckInCheckOutLayout, DownloadLayout } from '.';
+import { HomeLayout, UploadLayout, CheckInCheckOutLayout, DownloadLayout } from '.';
 import Shops from './Shops';
 import Errors from './Errors';
+import Users from './Users';
 
 export default {
   path: '',
@@ -8,9 +9,9 @@ export default {
   role: 'privated',
   childRoutes: [
     { path: 'shops', component: Shops, isIndex: true },
+    { path: 'users', component: Users },
     { path: 'errors', component: Errors },
     { path: 'cico', component: CheckInCheckOutLayout },
-    { path: 'users', component: Dashboard },
     { path: 'upload', component: UploadLayout },
     { path: 'download', component: DownloadLayout },
   ],
