@@ -1,9 +1,8 @@
 import api from '../../../common/axiosConfig';
-import { request, success, failure } from '../../../common/reduxActions';
+import { request, success } from '../../../common/reduxActions';
 import {
   AUTH_LOGIN_REQUEST,
   AUTH_LOGIN_SUCCESS,
-  AUTH_LOGIN_FAILURE,
   AUTH_LOGOUT,
   UPDATE_AUTH_HEADERS,
 } from './constants';

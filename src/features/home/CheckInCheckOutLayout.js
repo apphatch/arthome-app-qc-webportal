@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-import { Row, Col, Card, Table, Tag, Typography, Input, Image, Space } from 'antd';
+import { Row, Col, Card, Table, Typography, Input, Image, Space } from 'antd';
 
 import { connect } from 'react-redux';
 import homeActions from './redux/actions';

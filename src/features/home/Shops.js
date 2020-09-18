@@ -1,9 +1,7 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { Row, Col, Card, Table, Button, Form, Input, Space, DatePicker, Typography } from 'antd';
 import { SearchOutlined, DownloadOutlined, PlusOutlined } from '@ant-design/icons';
 import { shops as shopsMock } from './mock/shops';
-console.log('shopsMock', shopsMock());
 
 const { RangePicker } = DatePicker;
 const { Paragraph } = Typography;
@@ -55,8 +53,12 @@ const columns = [
     render: (_, record) => {
       return (
         <Space size="middle">
-          <a>Edit</a>
-          <a className="ant-dropdown-link">Delete</a>
+          <Button type="link" onClick={() => {}}>
+            Edit
+          </Button>
+          <Button type="link" onClick={() => {}}>
+            Delete
+          </Button>
         </Space>
       );
     },
@@ -118,7 +120,7 @@ const Shops = () => {
                     }}
                     icon={<PlusOutlined />}
                   >
-                    Create
+                    Add new
                   </Button>
                   <Button
                     style={{
