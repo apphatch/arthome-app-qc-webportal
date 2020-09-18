@@ -33,7 +33,7 @@ const columns = [
   },
 ];
 
-const Shops = () => {
+const Errors = () => {
   return (
     <Row>
       <Col span={24}>
@@ -62,4 +62,4 @@ const Shops = () => {
   );
 };
 
-export default Shops;
+export default Errors;
