@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Layout, Menu } from 'antd';
 import {
@@ -12,6 +12,8 @@ import {
   AreaChartOutlined,
 } from '@ant-design/icons';
 
+import { useLocation } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import authActions from '../auth/redux/actions';
 import history from '../../common/history';
@@ -19,6 +21,8 @@ import history from '../../common/history';
 const { Header, Sider, Content } = Layout;
 
 const HomeLayout = ({ children, dispatch }) => {
+  let { pathname } = useLocation();
+
   const [collapsed, setCollapsed] = React.useState(false);
 
   const toggle = () => {
@@ -28,11 +32,27 @@ const HomeLayout = ({ children, dispatch }) => {
   const logout = () => {
     dispatch(authActions.logout());
   };
+
+  const selectedKey = useMemo(() => {
+    switch (pathname) {
+      case '/errors':
+        return ['3'];
+      case '/users':
+        return ['2'];
+      case '/report-detail':
+        return ['4'];
+      case '/report-overview':
+        return ['5'];
+      default:
+        return ['1'];
+    }
+  }, [pathname]);
+
   return (
     <Layout style={{ height: '100vh' }}>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={selectedKey}>
           <Menu.Item key="1" icon={<ShopOutlined />} onClick={() => history.push('/')}>
             Shops
           </Menu.Item>

@@ -1,10 +1,8 @@
 import React from 'react';
-import _ from 'lodash';
 
 import { Row, Col, Card, Form, Select, Button, DatePicker, Input } from 'antd';
 
 import { connect } from 'react-redux';
-import homeActions from './redux/actions';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -18,8 +16,6 @@ const tailLayout = {
 };
 
 const DownloadLayout = ({ dispatch, home }) => {
-  const { listCheckInCheckOut } = home;
-
   const formRef = React.createRef();
 
   const onFinish = values => {

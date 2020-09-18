@@ -15,3 +15,13 @@ export const shops = () => {
     };
   });
 };
+
+export const errors = () => {
+  return Array.from({ length: 20 }, (_, key) => {
+    return {
+      id: faker.random.uuid(),
+      no: key + 1,
+      errorName: faker.random.words(),
+    };
+  });
+};
