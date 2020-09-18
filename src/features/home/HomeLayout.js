@@ -4,12 +4,12 @@ import { Layout, Menu } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
-  DashboardOutlined,
-  UploadOutlined,
   LogoutOutlined,
-  ImportOutlined,
-  DownloadOutlined,
   UserOutlined,
+  ShopOutlined,
+  WarningOutlined,
+  BarChartOutlined,
+  AreaChartOutlined,
 } from '@ant-design/icons';
 
 import { connect } from 'react-redux';
@@ -33,7 +33,33 @@ const HomeLayout = ({ children, dispatch }) => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1" icon={<ImportOutlined />} onClick={() => history.push('/')}>
+          <Menu.Item key="1" icon={<ShopOutlined />} onClick={() => history.push('/')}>
+            Shops
+          </Menu.Item>
+          <Menu.Item key="2" icon={<UserOutlined />} onClick={() => history.push('/users')}>
+            Users
+          </Menu.Item>
+          <Menu.Item key="3" icon={<WarningOutlined />} onClick={() => history.push('/errors')}>
+            Errors
+          </Menu.Item>
+          <Menu.Item
+            key="4"
+            icon={<BarChartOutlined />}
+            onClick={() => history.push('/report-detail')}
+          >
+            Report Detail
+          </Menu.Item>
+          <Menu.Item
+            key="5"
+            icon={<AreaChartOutlined />}
+            onClick={() => history.push('/report-overview')}
+          >
+            Report Overview
+          </Menu.Item>
+          <Menu.Item key="6" icon={<LogoutOutlined />} onClick={logout}>
+            Logout
+          </Menu.Item>
+          {/* <Menu.Item key="1" icon={<ImportOutlined />} onClick={() => history.push('/')}>
             Checkin/Checkout
           </Menu.Item>
           <Menu.Item key="2" icon={<UserOutlined />} onClick={() => history.push('/user')}>
@@ -47,7 +73,7 @@ const HomeLayout = ({ children, dispatch }) => {
           </Menu.Item>
           <Menu.Item key="5" icon={<LogoutOutlined />} onClick={logout}>
             Logout
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu>
       </Sider>
       <Layout className="site-layout">

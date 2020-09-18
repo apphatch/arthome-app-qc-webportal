@@ -1,11 +1,15 @@
 import api from '../../../common/axiosConfig';
-import { request, success, failure } from '../../../common/reduxActions';
+import {
+  // request,
+  success,
+  // failure
+} from '../../../common/reduxActions';
 import {
   GET_LIST_USERS_SUCCESS,
   IMPORT_STOCKS_SUCCESS,
   IMPORT_CHECKLISTS_SUCCESS,
   IMPORT_CHECKLIST_ITEMS_SUCCESS,
-  EDIT_USER_SUCCESS,
+  // EDIT_USER_SUCCESS,
   IMPORT_USERS_SUCCESS,
   IMPORT_SHOPS_SUCCESS,
   GET_LIST_CHECKIN_CHECKOUT_SUCCESS,
@@ -23,9 +27,11 @@ const getListUsers = () => {
         console.log(res);
       })
       .catch(error => {
-        const { status } = error.response;
-        if (status === 401 || status === 500) {
-          dispatch(authActions.logout());
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
         }
       });
   };
