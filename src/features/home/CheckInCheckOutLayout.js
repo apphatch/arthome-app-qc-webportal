@@ -127,7 +127,8 @@ const CheckInCheckOutLayout = ({ dispatch, home }) => {
                       </Row>
                     );
                   },
-                  rowExpandable: record => record.shop_checkout_photos.length > 0,
+                  rowExpandable: record =>
+                    record.shop_checkout_photos && record.shop_checkout_photos.length > 0,
                 }}
                 dataSource={listCheckInCheckOut}
               />
