@@ -96,7 +96,7 @@ const ReportDetail = () => {
   return (
     <Row>
       <Col span={24}>
-        <Card title="Report Detail" bordered={false} style={{ width: '100%' }}>
+        <Card title="Báo cáo chi tiết" bordered={false} style={{ width: '100%' }}>
           <Row>
             <Col span={24}>
               <Form form={form} initialValues={{}} onValuesChange={() => {}}>
