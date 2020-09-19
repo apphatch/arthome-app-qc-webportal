@@ -59,3 +59,22 @@ export const reportDetail = () => {
     };
   });
 };
+
+export const reportOverview = () => {
+  return Array.from({ length: 20 }, (_, key) => {
+    return {
+      id: faker.random.uuid(),
+      no: key + 1,
+      date: faker.date.recent(),
+      employeeName: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      shopName: `${faker.company.companyName()}`,
+      shopAddress: faker.address.secondaryAddress(),
+      hpc: faker.random.number(),
+      ic: faker.random.number(),
+      hpcReal: faker.random.number(),
+      green: faker.random.number(),
+      yellow: faker.random.number(),
+      red: faker.random.number(),
+    };
+  });
+};
