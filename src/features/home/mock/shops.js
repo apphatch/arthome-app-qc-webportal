@@ -39,3 +39,23 @@ export const users = () => {
     };
   });
 };
+
+const status = ['red', 'yellow', 'green'];
+
+export const reportDetail = () => {
+  return Array.from({ length: 20 }, (_, key) => {
+    const statusChance = Math.random();
+
+    return {
+      id: faker.random.uuid(),
+      no: key + 1,
+      employeeName: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      shopName: `${faker.company.companyName()}`,
+      shopAddress: faker.address.secondaryAddress(),
+      sku: faker.commerce.productMaterial(),
+      status: statusChance > 0.66 ? status[0] : statusChance > 0.33 ? status[1] : status[2],
+      errorName: 'No Error',
+      image: faker.image.avatar(),
+    };
+  });
+};
