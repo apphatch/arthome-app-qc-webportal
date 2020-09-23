@@ -26,31 +26,40 @@ const columns = [
     title: 'No',
     dataIndex: 'no',
     key: 'no',
+    width: 40,
   },
   {
     title: 'Tên nhân viên',
     dataIndex: 'employeeName',
     key: 'employeeName',
+    ellipsis: true,
+    width: 100,
   },
   {
     title: 'Tên cửa hàng',
     dataIndex: 'shopName',
     key: 'shopName',
+    ellipsis: true,
+    width: 150,
   },
   {
     title: 'Địa chỉ cửa hàng',
     dataIndex: 'shopAddress',
     key: 'shopAddress',
+    ellipsis: true,
+    width: 150,
   },
   {
     title: 'SKU',
     dataIndex: 'sku',
     key: 'sku',
+    width: 100,
   },
   {
     title: 'Cảnh báo',
     dataIndex: 'status',
     key: 'status',
+    width: 100,
     render: status => {
       return <Tag color={status}>{status.toUpperCase()}</Tag>;
     },
@@ -59,18 +68,21 @@ const columns = [
     title: 'Lỗi',
     dataIndex: 'errorName',
     key: 'errorName',
+    width: 80,
   },
   {
     title: 'Hình ảnh',
     dataIndex: 'image',
     key: 'image',
+    width: 100,
     render: img => {
-      return <Image width={200} src={img} />;
+      return <Image width={100} src={img} />;
     },
   },
   {
     title: 'Actions',
     dataIndex: 'actions',
+    width: 150,
     render: (_, record) => {
       return (
         <Space size="small">
@@ -242,7 +254,7 @@ const ReportDetail = () => {
                   </Col>
                 </Row>
 
-                <Row>
+                <Row justify="end">
                   <Col>
                     <Form.Item>
                       <Space size="middle">
@@ -255,7 +267,7 @@ const ReportDetail = () => {
                   </Col>
                 </Row>
               </Form>
-              <Table columns={columns} dataSource={reportMock()} rowKey="id" scroll={{ x: 1500 }} />
+              <Table columns={columns} dataSource={reportMock()} rowKey="id" />
             </Col>
           </Row>
         </Card>

@@ -72,6 +72,7 @@ export const reportOverview = () => {
       hpc: faker.random.number(),
       ic: faker.random.number(),
       hpcReal: faker.random.number(),
+      icReal: faker.random.number(),
       green: faker.random.number(),
       yellow: faker.random.number(),
       red: faker.random.number(),

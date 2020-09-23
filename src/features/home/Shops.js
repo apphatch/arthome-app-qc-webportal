@@ -65,13 +65,8 @@ const columns = [
   },
 ];
 
-const layout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 4 },
-};
-
-const buttonItemLayout = {
-  wrapperCol: { span: 6, offset: 0 },
+const labelCol = {
+  span: 24,
 };
 
 const Shops = () => {
@@ -84,53 +79,65 @@ const Shops = () => {
           <Row>
             <Col span={24}>
               <Form
-                {...layout}
-                layout="horizontal"
+                // {...layout}
+                // layout="horizontal"
                 form={form}
                 initialValues={{}}
                 onValuesChange={() => {}}
               >
-                <Paragraph
-                  strong
-                  style={{
-                    marginBottom: 10,
-                  }}
-                >
-                  Filters
-                </Paragraph>
-                <Form.Item>
-                  <RangePicker
+                <Row gutter={24}>
+                  <Paragraph
+                    strong
                     style={{
-                      width: '100%',
+                      marginBottom: 10,
                     }}
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <Input placeholder="Name or employee ID" />
-                </Form.Item>
-                <Form.Item>
-                  <Input placeholder="Name or shop ID" />
-                </Form.Item>
-                <Form.Item {...buttonItemLayout}>
-                  <Button icon={<SearchOutlined />}>Search</Button>
-                  <Button
-                    type="primary"
-                    style={{
-                      marginLeft: 10,
-                    }}
-                    icon={<PlusOutlined />}
                   >
-                    Add new
-                  </Button>
-                  <Button
-                    style={{
-                      marginLeft: 10,
-                    }}
-                    icon={<DownloadOutlined />}
-                  >
-                    Export to Excel
-                  </Button>
-                </Form.Item>
+                    Filters
+                  </Paragraph>
+                </Row>
+
+                <Row gutter={24}>
+                  <Col span={4}>
+                    <Form.Item label="Ngày bắt đầu/kết thúc" labelCol={labelCol}>
+                      <RangePicker />
+                    </Form.Item>
+                  </Col>
+                  <Col span={4}>
+                    <Form.Item label="Tên/Mã nhân viên" labelCol={labelCol}>
+                      <Input placeholder="Name or employee ID" />
+                    </Form.Item>
+                  </Col>
+                  <Col span={4}>
+                    <Form.Item label="Tên/Mã cửa hàng" labelCol={labelCol}>
+                      <Input placeholder="Name or shop ID" />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Row justify="end">
+                  <Col>
+                    <Form.Item>
+                      <Button icon={<SearchOutlined />}>Search</Button>
+                      <Button
+                        type="primary"
+                        style={{
+                          marginLeft: 10,
+                        }}
+                        icon={<PlusOutlined />}
+                      >
+                        Add new
+                      </Button>
+                      <Button
+                        style={{
+                          marginLeft: 10,
+                        }}
+                        icon={<DownloadOutlined />}
+                      >
+                        Export to Excel
+                      </Button>
+                    </Form.Item>
+                  </Col>
+                </Row>
               </Form>
               <Table columns={columns} dataSource={shopsMock()} rowKey="id" />
             </Col>

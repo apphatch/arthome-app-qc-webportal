@@ -7,7 +7,7 @@ import {
   LogoutOutlined,
   UserOutlined,
   ShopOutlined,
-  WarningOutlined,
+  // WarningOutlined,
   BarChartOutlined,
   AreaChartOutlined,
 } from '@ant-design/icons';
@@ -59,9 +59,9 @@ const HomeLayout = ({ children, dispatch }) => {
           <Menu.Item key="2" icon={<UserOutlined />} onClick={() => history.push('/users')}>
             Users
           </Menu.Item>
-          <Menu.Item key="3" icon={<WarningOutlined />} onClick={() => history.push('/errors')}>
+          {/* <Menu.Item key="3" icon={<WarningOutlined />} onClick={() => history.push('/errors')}>
             Errors
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item
             key="4"
             icon={<BarChartOutlined />}
