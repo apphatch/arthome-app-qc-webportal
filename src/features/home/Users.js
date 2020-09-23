@@ -55,13 +55,8 @@ const columns = [
   },
 ];
 
-const layout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 4 },
-};
-
-const buttonItemLayout = {
-  wrapperCol: { span: 6, offset: 0 },
+const labelCol = {
+  span: 24,
 };
 
 const Users = () => {
@@ -73,43 +68,48 @@ const Users = () => {
         <Card title="Users List" bordered={false} style={{ width: '100%' }}>
           <Row>
             <Col span={24}>
-              <Form
-                {...layout}
-                layout="horizontal"
-                form={form}
-                initialValues={{}}
-                onValuesChange={() => {}}
-              >
-                <Paragraph
-                  strong
-                  style={{
-                    marginBottom: 10,
-                  }}
-                >
-                  Filters
-                </Paragraph>
-                <Form.Item>
-                  <RangePicker
-                    style={{
-                      width: '100%',
-                    }}
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <Input placeholder="Name or employee ID" />
-                </Form.Item>
-                <Form.Item {...buttonItemLayout}>
-                  <Button icon={<SearchOutlined />}>Search</Button>
-                  <Button
-                    type="primary"
-                    style={{
-                      marginLeft: 10,
-                    }}
-                    icon={<PlusOutlined />}
-                  >
-                    Add new
-                  </Button>
-                </Form.Item>
+              <Form form={form} initialValues={{}} onValuesChange={() => {}}>
+                <Row gutter={24}>
+                  <Col>
+                    <Paragraph
+                      strong
+                      style={{
+                        marginBottom: 10,
+                      }}
+                    >
+                      Filters
+                    </Paragraph>
+                  </Col>
+                </Row>
+                <Row gutter={24}>
+                  <Col span={4}>
+                    <Form.Item label="Ngày bắt đầu/kết thúc" labelCol={labelCol}>
+                      <RangePicker />
+                    </Form.Item>
+                  </Col>
+                  <Col span={4}>
+                    <Form.Item label="Mã nhân viên" labelCol={labelCol}>
+                      <Input placeholder="Name or employee ID" />
+                    </Form.Item>
+                  </Col>
+                </Row>
+
+                <Row gutter={24} justify="end">
+                  <Col>
+                    <Form.Item>
+                      <Button icon={<SearchOutlined />}>Search</Button>
+                      <Button
+                        type="primary"
+                        style={{
+                          marginLeft: 10,
+                        }}
+                        icon={<PlusOutlined />}
+                      >
+                        Add new
+                      </Button>
+                    </Form.Item>
+                  </Col>
+                </Row>
               </Form>
               <Table columns={columns} dataSource={usersMock()} rowKey="id" />
             </Col>

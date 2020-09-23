@@ -39,6 +39,11 @@ const columns = [
     key: 'ic',
   },
   {
+    title: 'Mẫu thực tế IC',
+    dataIndex: 'icReal',
+    key: 'icReal',
+  },
+  {
     title: 'Mẫu thực tế HPC',
     dataIndex: 'hpcReal',
     key: 'hpcReal',
@@ -87,7 +92,7 @@ const ReportOverview = () => {
                 <Row gutter={24}>
                   <Col span={4}>
                     <Form.Item label="Ngày bắt đầu/kết thúc" labelCol={labelCol}>
-                      <RangePicker style={{ width: '100%' }} />
+                      <RangePicker />
                     </Form.Item>
                   </Col>
                   <Col span={4}>
@@ -124,7 +129,7 @@ const ReportOverview = () => {
                   </Col>
                 </Row>
 
-                <Row>
+                <Row justify="end">
                   <Col>
                     <Form.Item>
                       <Space size="middle">
@@ -137,12 +142,7 @@ const ReportOverview = () => {
                   </Col>
                 </Row>
               </Form>
-              <Table
-                columns={columns}
-                dataSource={reportOverview()}
-                rowKey="id"
-                scroll={{ x: 1500 }}
-              />
+              <Table columns={columns} dataSource={reportOverview()} rowKey="id" />
             </Col>
           </Row>
         </Card>
