@@ -50,9 +50,13 @@ const HomeLayout = ({ children, dispatch }) => {
 
   return (
     <Layout style={{ height: '100vh' }}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Sider trigger={null} collapsible collapsed={collapsed} className="site-layout-background">
         <div className="logo" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={selectedKey}>
+        <Menu
+          mode="inline"
+          defaultSelectedKeys={selectedKey}
+          className="site-layout-menu-background"
+        >
           <Menu.Item key="1" icon={<ShopOutlined />} onClick={() => history.push('/')}>
             Shops
           </Menu.Item>

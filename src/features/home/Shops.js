@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col, Card, Table, Button, Form, Input, Space, DatePicker, Typography } from 'antd';
 import { SearchOutlined, DownloadOutlined, PlusOutlined } from '@ant-design/icons';
-import { shops as shopsMock } from './mock/shops';
+import { useDispatch, useSelector } from 'react-redux';
+import { getShops } from './redux/actions';
 
 const { RangePicker } = DatePicker;
 const { Paragraph } = Typography;
@@ -9,44 +10,44 @@ const { Paragraph } = Typography;
 const columns = [
   {
     title: 'No',
-    dataIndex: 'no',
-    key: 'no',
+    dataIndex: 'id',
+    key: 'id',
   },
   {
     title: 'Store Type',
-    dataIndex: 'storeType',
-    key: 'storeType',
+    dataIndex: 'shop_type',
+    key: 'shop_type',
   },
   {
     title: 'City',
     dataIndex: 'city',
     key: 'city',
   },
-  {
-    title: 'NPP',
-    dataIndex: 'npp',
-    key: 'npp',
-  },
+  // {
+  //   title: 'NPP',
+  //   dataIndex: 'npp',
+  //   key: 'npp',
+  // },
   {
     title: 'Store Name',
-    dataIndex: 'storeName',
-    key: 'storeName',
+    dataIndex: 'name',
+    key: 'name',
   },
   {
     title: 'Store Address',
-    dataIndex: 'storeAddress',
-    key: 'storeAddress',
+    dataIndex: 'full_address',
+    key: 'full_address',
   },
   {
     title: 'Quận',
     dataIndex: 'district',
     key: 'district',
   },
-  {
-    title: 'Mã NV',
-    dataIndex: 'employeeId',
-    key: 'employeeId',
-  },
+  // {
+  //   title: 'Mã NV',
+  //   dataIndex: 'employeeId',
+  //   key: 'employeeId',
+  // },
   {
     title: 'Actions',
     dataIndex: 'actions',
@@ -71,6 +72,13 @@ const labelCol = {
 
 const Shops = () => {
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  const homeState = useSelector((state) => state.home);
+
+  useEffect(() => {
+    dispatch(getShops({ userId: user.user_id }));
+  }, [dispatch, user.user_id]);
 
   return (
     <Row>
@@ -139,7 +147,7 @@ const Shops = () => {
                   </Col>
                 </Row>
               </Form>
-              <Table columns={columns} dataSource={shopsMock()} rowKey="id" />
+              <Table columns={columns} dataSource={homeState.shops || []} rowKey="id" />
             </Col>
           </Row>
         </Card>
