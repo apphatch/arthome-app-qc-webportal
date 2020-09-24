@@ -13,20 +13,21 @@ import {
   IMPORT_USERS_SUCCESS,
   IMPORT_SHOPS_SUCCESS,
   GET_LIST_CHECKIN_CHECKOUT_SUCCESS,
+  GET_SHOPS_SUCCESS,
 } from './constants';
 import authActions from '../../auth/redux/actions';
 import downloadXlsFromBase64 from '../../../common/download';
 
 const getListUsers = () => {
-  return dispatch => {
+  return (dispatch) => {
     return api()
       .get('users')
-      .then(res => {
+      .then((res) => {
         dispatch(success(GET_LIST_USERS_SUCCESS, res.data));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           if (status === 401 || status === 500) {
@@ -37,16 +38,37 @@ const getListUsers = () => {
   };
 };
 
-const uploadStocks = data => {
-  return dispatch => {
+export const getShops = ({ userId }) => {
+  return (dispatch) => {
+    return api()
+      .get(`shops/index_by_user?user_id=${userId}`)
+      .then((res) => {
+        console.log('getShops -> res', res);
+        dispatch(success(GET_SHOPS_SUCCESS, res.data));
+        dispatch(authActions.updateAuthorization(res.headers));
+      })
+      .catch((error) => {
+        console.log('getShops -> error', error);
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
+};
+
+const uploadStocks = (data) => {
+  return (dispatch) => {
     return api()
       .post('stocks/import', data)
-      .then(res => {
+      .then((res) => {
         dispatch(success(IMPORT_STOCKS_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         if (status === 401 || status === 500) {
           dispatch(authActions.logout());
@@ -55,16 +77,16 @@ const uploadStocks = data => {
   };
 };
 
-const uploadChecklists = data => {
-  return dispatch => {
+const uploadChecklists = (data) => {
+  return (dispatch) => {
     return api()
       .post('checklists/import', data)
-      .then(res => {
+      .then((res) => {
         dispatch(success(IMPORT_CHECKLISTS_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         if (status === 401 || status === 500) {
           dispatch(authActions.logout());
@@ -73,16 +95,16 @@ const uploadChecklists = data => {
   };
 };
 
-const uploadChecklistItems = data => {
-  return dispatch => {
+const uploadChecklistItems = (data) => {
+  return (dispatch) => {
     return api()
       .post('checklist_items/import', data)
-      .then(res => {
+      .then((res) => {
         dispatch(success(IMPORT_CHECKLIST_ITEMS_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         if (status === 401 || status === 500) {
           dispatch(authActions.logout());
@@ -91,16 +113,16 @@ const uploadChecklistItems = data => {
   };
 };
 
-const uploadFull = data => {
-  return dispatch => {
+const uploadFull = (data) => {
+  return (dispatch) => {
     return api('multipart/form-data')
       .post('shops/import_osa', data)
-      .then(res => {
+      .then((res) => {
         dispatch(success(IMPORT_SHOPS_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         if (status === 401 || status === 500) {
           dispatch(authActions.logout());
@@ -110,15 +132,15 @@ const uploadFull = data => {
 };
 
 const editUser = (userId, data) => {
-  return dispatch => {
+  return (dispatch) => {
     return api()
       .put('users/' + userId, data)
-      .then(res => {
+      .then((res) => {
         // dispatch(success(EDIT_USER_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         if (status === 401 || status === 500) {
           dispatch(authActions.logout());
@@ -127,16 +149,16 @@ const editUser = (userId, data) => {
   };
 };
 
-const lockUser = userId => {
-  return dispatch => {
+const lockUser = (userId) => {
+  return (dispatch) => {
     return api()
       .post(`users/${userId}/lock`, {})
-      .then(res => {
+      .then((res) => {
         // dispatch(success(EDIT_USER_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         if (status === 401 || status === 500) {
           dispatch(authActions.logout());
@@ -145,16 +167,16 @@ const lockUser = userId => {
   };
 };
 
-const unlockUser = userId => {
-  return dispatch => {
+const unlockUser = (userId) => {
+  return (dispatch) => {
     return api()
       .post(`users/${userId}/unlock`, {})
-      .then(res => {
+      .then((res) => {
         // dispatch(success(EDIT_USER_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         if (status === 401 || status === 500) {
           dispatch(authActions.logout());
@@ -163,16 +185,16 @@ const unlockUser = userId => {
   };
 };
 
-const uploadUsers = data => {
-  return dispatch => {
+const uploadUsers = (data) => {
+  return (dispatch) => {
     return api()
       .post('users/import', data)
-      .then(res => {
+      .then((res) => {
         dispatch(success(IMPORT_USERS_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         if (status === 401 || status === 500) {
           dispatch(authActions.logout());
@@ -182,11 +204,11 @@ const uploadUsers = data => {
 };
 
 const getCheckInCheckOut = () => {
-  return dispatch => {
+  return (dispatch) => {
     return api()
       .get('checkin_checkouts')
-      .then(res => {
-        res.data = res.data.map(data => {
+      .then((res) => {
+        res.data = res.data.map((data) => {
           data.key = data.id;
           return data;
         });
@@ -194,7 +216,7 @@ const getCheckInCheckOut = () => {
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         if (status === 401 || status === 500) {
           dispatch(authActions.logout());
@@ -204,14 +226,14 @@ const getCheckInCheckOut = () => {
 };
 
 const downloadUserTemplate = () => {
-  return dispatch => {
+  return (dispatch) => {
     return api()
       .get('users/import_template')
-      .then(res => {
+      .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'user_template', 'xls');
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           if (status === 401 || status === 500) {
@@ -223,14 +245,14 @@ const downloadUserTemplate = () => {
 };
 
 const downloadStockTemplate = () => {
-  return dispatch => {
+  return (dispatch) => {
     return api()
       .get('stocks/import_template')
-      .then(res => {
+      .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'stock_template', 'xls');
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           if (status === 401 || status === 500) {
@@ -242,14 +264,14 @@ const downloadStockTemplate = () => {
 };
 
 const downloadCheckListTemplate = () => {
-  return dispatch => {
+  return (dispatch) => {
     return api()
       .get('checklists/import_template')
-      .then(res => {
+      .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'checklist_template', 'xls');
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           if (status === 401 || status === 500) {
@@ -261,14 +283,14 @@ const downloadCheckListTemplate = () => {
 };
 
 const downloadChecklistItemsTemplate = () => {
-  return dispatch => {
+  return (dispatch) => {
     return api()
       .get('checklist_items/import_template')
-      .then(res => {
+      .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'checklist_item_template', 'xls');
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           if (status === 401 || status === 500) {
@@ -280,14 +302,14 @@ const downloadChecklistItemsTemplate = () => {
 };
 
 const downloadShopTemplate = () => {
-  return dispatch => {
+  return (dispatch) => {
     return api()
       .get('shops/import_template')
-      .then(res => {
+      .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'shop_template', 'xls');
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const { status } = error.response;
           if (status === 401 || status === 500) {

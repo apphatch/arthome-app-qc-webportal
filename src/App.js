@@ -23,7 +23,7 @@ function renderRouteConfigV3(routes, contextPath) {
       children.push(
         <Route
           key={newContextPath}
-          render={props => {
+          render={(props) => {
             if (item.role === 'protected' && headers.Authorization) {
               return <Redirect to={{ pathname: '/' }} />;
             } else if (item.role === 'privated' && !headers.Authorization) {
@@ -39,7 +39,7 @@ function renderRouteConfigV3(routes, contextPath) {
       children.push(
         <Route
           key={newContextPath}
-          render={props => {
+          render={(props) => {
             if (item.role === 'protected' && headers.Authorization) {
               return <Redirect to={{ pathname: '/' }} />;
             } else if (item.role === 'privated' && !headers.Authorization) {
@@ -53,11 +53,11 @@ function renderRouteConfigV3(routes, contextPath) {
         />,
       );
     } else if (item.childRoutes) {
-      item.childRoutes.forEach(r => renderRoute(r, newContextPath));
+      item.childRoutes.forEach((r) => renderRoute(r, newContextPath));
     }
   };
 
-  routes.forEach(item => renderRoute(item, contextPath));
+  routes.forEach((item) => renderRoute(item, contextPath));
 
   // Use Switch so that only the first matched route is rendered.
   return <Switch>{children}</Switch>;

@@ -1,0 +1,46 @@
+@import '~antd/lib/style/themes/default.less';
+
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: #1890ff;
+}
+
+.logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.site-layout-background {
+  background-color: @primary-color;
+}
+.site-layout-menu-background {
+  background-color: @primary-color;
+  color: #fff;
+  .ant-menu-item {
+    &:hover {
+      color: #fff;
+    }
+    &.ant-menu-item-selected {
+      &:hover {
+        color: @primary-color;
+      }
+    }
+  }
+}
+
+.ant-table-thead > tr > th {
+  background: @primary-color;
+  color: #fff;
+}
