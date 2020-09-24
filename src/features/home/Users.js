@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col, Card, Table, Button, Form, Input, Space, DatePicker, Typography } from 'antd';
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
-import { users as usersMock } from './mock/shops';
+import { useDispatch, useSelector } from 'react-redux';
+import { getListUsers } from './redux/actions';
 
 const { RangePicker } = DatePicker;
 const { Paragraph } = Typography;
@@ -9,34 +10,34 @@ const { Paragraph } = Typography;
 const columns = [
   {
     title: 'No',
-    dataIndex: 'no',
-    key: 'no',
+    dataIndex: 'id',
+    key: 'id',
   },
   {
     title: 'Full name',
-    dataIndex: 'fullName',
-    key: 'fullName',
+    dataIndex: 'name',
+    key: 'name',
   },
   {
     title: 'Username',
     dataIndex: 'username',
     key: 'username',
   },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'District',
-    dataIndex: 'district',
-    key: 'district',
-  },
-  {
-    title: 'Phone Number',
-    dataIndex: 'phoneNumber',
-    key: 'phoneNumber',
-  },
+  // {
+  //   title: 'Address',
+  //   dataIndex: 'address',
+  //   key: 'address',
+  // },
+  // {
+  //   title: 'District',
+  //   dataIndex: 'district',
+  //   key: 'district',
+  // },
+  // {
+  //   title: 'Phone Number',
+  //   dataIndex: 'phoneNumber',
+  //   key: 'phoneNumber',
+  // },
   {
     title: 'Actions',
     dataIndex: 'actions',
@@ -61,6 +62,13 @@ const labelCol = {
 
 const Users = () => {
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const { users } = useSelector((state) => state.home);
+  console.log('Users -> users', users);
+
+  useEffect(() => {
+    dispatch(getListUsers());
+  }, [dispatch]);
 
   return (
     <Row>
@@ -111,7 +119,7 @@ const Users = () => {
                   </Col>
                 </Row>
               </Form>
-              <Table columns={columns} dataSource={usersMock()} rowKey="id" />
+              <Table columns={columns} dataSource={users || []} rowKey="id" />
             </Col>
           </Row>
         </Card>
