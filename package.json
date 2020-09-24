@@ -33,9 +33,9 @@
     "husky": "^4.3.0"
   },
   "scripts": {
-    "start": "cross-env PORT=3100 craco start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "cross-env PORT=3100 craco --max_old_space_size=2048 start",
+    "build": "craco --max_old_space_size=2048 build",
+    "test": "craco --max_old_space_size=2048 test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

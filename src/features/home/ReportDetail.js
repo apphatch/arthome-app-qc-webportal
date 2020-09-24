@@ -60,7 +60,7 @@ const columns = [
     dataIndex: 'status',
     key: 'status',
     width: 100,
-    render: status => {
+    render: (status) => {
       return <Tag color={status}>{status.toUpperCase()}</Tag>;
     },
   },
@@ -75,27 +75,27 @@ const columns = [
     dataIndex: 'image',
     key: 'image',
     width: 100,
-    render: img => {
+    render: (img) => {
       return <Image width={100} src={img} />;
     },
   },
-  {
-    title: 'Actions',
-    dataIndex: 'actions',
-    width: 150,
-    render: (_, record) => {
-      return (
-        <Space size="small">
-          <Button type="link" onClick={() => {}}>
-            Edit
-          </Button>
-          <Button type="link" onClick={() => {}}>
-            Delete
-          </Button>
-        </Space>
-      );
-    },
-  },
+  // {
+  //   title: 'Actions',
+  //   dataIndex: 'actions',
+  //   width: 150,
+  //   render: (_, record) => {
+  //     return (
+  //       <Space size="small">
+  //         <Button type="link" onClick={() => {}}>
+  //           Edit
+  //         </Button>
+  //         <Button type="link" onClick={() => {}}>
+  //           Delete
+  //         </Button>
+  //       </Space>
+  //     );
+  //   },
+  // },
 ];
 
 const labelCol = {
