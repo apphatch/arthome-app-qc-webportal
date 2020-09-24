@@ -30,13 +30,13 @@
   "devDependencies": {
     "cross-env": "^7.0.2",
     "git-cz": "^4.7.1",
-    "husky": "^4.3.0"
+    "husky": "^4.3.0",
+    "serve": "^11.3.2"
   },
   "scripts": {
-    "start": "cross-env PORT=3100 craco start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "cross-env PORT=3100 craco --max_old_space_size=2048 start",
+    "build": "craco --max_old_space_size=2048 build",
+    "serve": "yarn build && serve -l 3100 -s build"
   },
   "eslintConfig": {
     "extends": "react-app"
