@@ -18,7 +18,7 @@ import {
 import authActions from '../../auth/redux/actions';
 import downloadXlsFromBase64 from '../../../common/download';
 
-const getListUsers = () => {
+export const getListUsers = () => {
   return (dispatch) => {
     return api()
       .get('users')
