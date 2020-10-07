@@ -1,69 +1,13 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Row, Col, Card, Table, Button, Form, Space, DatePicker, Typography, Select } from 'antd';
 import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
-import { reportOverview } from './mock/shops';
+import { useDispatch, useSelector } from 'react-redux';
+import { getReportOverview } from './redux/actions';
+import { random as fakerRandom } from 'faker';
 
 const { RangePicker } = DatePicker;
 const { Paragraph } = Typography;
 const { Option } = Select;
-
-const columns = [
-  {
-    title: 'No',
-    dataIndex: 'no',
-    key: 'no',
-  },
-  {
-    title: 'Tên nhân viên',
-    dataIndex: 'employeeName',
-    key: 'employeeName',
-  },
-  {
-    title: 'Tên cửa hàng',
-    dataIndex: 'shopName',
-    key: 'shopName',
-  },
-  {
-    title: 'Địa chỉ cửa hàng',
-    dataIndex: 'shopAddress',
-    key: 'shopAddress',
-  },
-  {
-    title: 'HPC',
-    dataIndex: 'hpc',
-    key: 'hpc',
-  },
-  {
-    title: 'IC',
-    dataIndex: 'ic',
-    key: 'ic',
-  },
-  {
-    title: 'Mẫu thực tế IC',
-    dataIndex: 'icReal',
-    key: 'icReal',
-  },
-  {
-    title: 'Mẫu thực tế HPC',
-    dataIndex: 'hpcReal',
-    key: 'hpcReal',
-  },
-  {
-    title: 'Xanh',
-    dataIndex: 'green',
-    key: 'green',
-  },
-  {
-    title: 'Vàng',
-    dataIndex: 'yellow',
-    key: 'yellow',
-  },
-  {
-    title: 'Đỏ',
-    dataIndex: 'red',
-    key: 'red',
-  },
-];
 
 const labelCol = {
   span: 24,
@@ -71,6 +15,41 @@ const labelCol = {
 
 const ReportOverview = () => {
   const [form] = Form.useForm();
+
+  const dispatch = useDispatch();
+
+  const reportOverviewState = useSelector((state) => state.home.reportOverview);
+
+  useEffect(() => {
+    dispatch(getReportOverview());
+  }, [dispatch]);
+
+  const tblConfigs = useMemo(() => {
+    if (reportOverviewState) {
+      const firstItem = reportOverviewState[0];
+      const columns = firstItem.map((item) => ({
+        title: item,
+        dataIndex: item,
+        key: item,
+      }));
+      const data = reportOverviewState.filter((_, index) => index !== 0);
+      const tblData = data.map((item) => {
+        let obj = {
+          id: fakerRandom.uuid(),
+        };
+        item.forEach((val, idx) => {
+          obj[firstItem[idx]] = val;
+        });
+
+        return obj;
+      });
+      return {
+        columns,
+        data: tblData,
+      };
+    }
+    return [];
+  }, [reportOverviewState]);
 
   return (
     <Row>
@@ -142,7 +121,10 @@ const ReportOverview = () => {
                   </Col>
                 </Row>
               </Form>
-              <Table columns={columns} dataSource={reportOverview()} rowKey="id" />
+
+              {reportOverviewState ? (
+                <Table columns={tblConfigs.columns} dataSource={tblConfigs.data} rowKey="id" />
+              ) : null}
             </Col>
           </Row>
         </Card>

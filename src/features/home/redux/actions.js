@@ -14,6 +14,8 @@ import {
   IMPORT_SHOPS_SUCCESS,
   GET_LIST_CHECKIN_CHECKOUT_SUCCESS,
   GET_SHOPS_SUCCESS,
+  GET_REPORT_OVERVIEW_SUCCESS,
+  GET_REPORT_DETAIL_SUCCESS,
 } from './constants';
 import authActions from '../../auth/redux/actions';
 import downloadXlsFromBase64 from '../../../common/download';
@@ -43,8 +45,48 @@ export const getShops = ({ userId }) => {
     return api()
       .get(`shops/index_by_user?user_id=${userId}`)
       .then((res) => {
-        console.log('getShops -> res', res);
         dispatch(success(GET_SHOPS_SUCCESS, res.data));
+        dispatch(authActions.updateAuthorization(res.headers));
+      })
+      .catch((error) => {
+        console.log('getShops -> error', error);
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
+};
+
+export const getReportOverview = () => {
+  return (dispatch) => {
+    return api()
+      .get(`reports/qc_summary`)
+      .then((res) => {
+        dispatch(success(GET_REPORT_OVERVIEW_SUCCESS, res.data));
+        dispatch(authActions.updateAuthorization(res.headers));
+      })
+      .catch((error) => {
+        console.log('getShops -> error', error);
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
+};
+
+export const getReportDetail = () => {
+  return (dispatch) => {
+    return api()
+      .get(`reports/qc_detail`)
+      .then((res) => {
+        console.log('getReportDetail -> res', res);
+        dispatch(success(GET_REPORT_DETAIL_SUCCESS, res.data));
         dispatch(authActions.updateAuthorization(res.headers));
       })
       .catch((error) => {
