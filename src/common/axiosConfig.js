@@ -15,7 +15,7 @@ const api = (contentType) => {
     }
   }
 
-  headers.App = 'osa';
+  headers.App = 'qc-webportal';
   if (contentType) {
     headers['Content-Type'] = contentType;
   }

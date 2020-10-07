@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Row,
   Col,
@@ -16,6 +16,8 @@ import {
 } from 'antd';
 import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
 import { reportDetail as reportMock } from './mock/shops';
+import { useDispatch, useSelector } from 'react-redux';
+import { getReportDetail } from './redux/actions';
 
 const { RangePicker } = DatePicker;
 const { Paragraph } = Typography;
@@ -104,6 +106,15 @@ const labelCol = {
 
 const ReportDetail = () => {
   const [form] = Form.useForm();
+
+  const dispatch = useDispatch();
+
+  const reportDetailState = useSelector((state) => state.home.reportDetail);
+  console.log('ReportDetail -> reportDetailState', reportDetailState);
+
+  useEffect(() => {
+    dispatch(getReportDetail());
+  }, [dispatch]);
 
   return (
     <Row>
