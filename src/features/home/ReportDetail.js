@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Row,
   Col,
@@ -11,94 +11,17 @@ import {
   DatePicker,
   Typography,
   Select,
-  Tag,
-  Image,
+  // Tag,
+  // Image,
 } from 'antd';
 import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
-import { reportDetail as reportMock } from './mock/shops';
 import { useDispatch, useSelector } from 'react-redux';
 import { getReportDetail } from './redux/actions';
+import { random as fakerRandom } from 'faker';
 
 const { RangePicker } = DatePicker;
 const { Paragraph } = Typography;
 const { Option } = Select;
-
-const columns = [
-  {
-    title: 'No',
-    dataIndex: 'no',
-    key: 'no',
-    width: 40,
-  },
-  {
-    title: 'Tên nhân viên',
-    dataIndex: 'employeeName',
-    key: 'employeeName',
-    ellipsis: true,
-    width: 100,
-  },
-  {
-    title: 'Tên cửa hàng',
-    dataIndex: 'shopName',
-    key: 'shopName',
-    ellipsis: true,
-    width: 150,
-  },
-  {
-    title: 'Địa chỉ cửa hàng',
-    dataIndex: 'shopAddress',
-    key: 'shopAddress',
-    ellipsis: true,
-    width: 150,
-  },
-  {
-    title: 'SKU',
-    dataIndex: 'sku',
-    key: 'sku',
-    width: 100,
-  },
-  {
-    title: 'Cảnh báo',
-    dataIndex: 'status',
-    key: 'status',
-    width: 100,
-    render: (status) => {
-      return <Tag color={status}>{status.toUpperCase()}</Tag>;
-    },
-  },
-  {
-    title: 'Lỗi',
-    dataIndex: 'errorName',
-    key: 'errorName',
-    width: 80,
-  },
-  {
-    title: 'Hình ảnh',
-    dataIndex: 'image',
-    key: 'image',
-    width: 100,
-    render: (img) => {
-      return <Image width={100} src={img} />;
-    },
-  },
-  // {
-  //   title: 'Actions',
-  //   dataIndex: 'actions',
-  //   width: 150,
-  //   render: (_, record) => {
-  //     return (
-  //       <Space size="small">
-  //         <Button type="link" onClick={() => {}}>
-  //           Edit
-  //         </Button>
-  //         <Button type="link" onClick={() => {}}>
-  //           Delete
-  //         </Button>
-  //       </Space>
-  //     );
-  //   },
-  // },
-];
 
 const labelCol = {
   span: 24,
@@ -110,11 +33,37 @@ const ReportDetail = () => {
   const dispatch = useDispatch();
 
   const reportDetailState = useSelector((state) => state.home.reportDetail);
-  console.log('ReportDetail -> reportDetailState', reportDetailState);
 
   useEffect(() => {
     dispatch(getReportDetail());
   }, [dispatch]);
+
+  const tblConfigs = useMemo(() => {
+    if (reportDetailState) {
+      const firstItem = reportDetailState[0];
+      const columns = firstItem.map((item) => ({
+        title: item,
+        dataIndex: item,
+        key: item,
+      }));
+      const data = reportDetailState.filter((_, index) => index !== 0);
+      const tblData = data.map((item) => {
+        let obj = {
+          id: fakerRandom.uuid(),
+        };
+        item.forEach((val, idx) => {
+          obj[firstItem[idx]] = val;
+        });
+
+        return obj;
+      });
+      return {
+        columns,
+        data: tblData,
+      };
+    }
+    return [];
+  }, [reportDetailState]);
 
   return (
     <Row>
@@ -278,7 +227,7 @@ const ReportDetail = () => {
                   </Col>
                 </Row>
               </Form>
-              <Table columns={columns} dataSource={reportMock()} rowKey="id" />
+              <Table columns={tblConfigs.columns} dataSource={tblConfigs.data} rowKey="id" />
             </Col>
           </Row>
         </Card>
