@@ -19,6 +19,7 @@ const ReportOverview = () => {
   const dispatch = useDispatch();
 
   const reportOverviewState = useSelector((state) => state.home.reportOverview);
+  const loading = useSelector((state) => state.home.loading);
 
   useEffect(() => {
     dispatch(getReportOverview());
@@ -71,7 +72,7 @@ const ReportOverview = () => {
                 <Row gutter={24}>
                   <Col span={4}>
                     <Form.Item label="Ngày bắt đầu/kết thúc" labelCol={labelCol}>
-                      <RangePicker />
+                      <RangePicker disabled={loading} />
                     </Form.Item>
                   </Col>
                   <Col span={4}>
@@ -83,6 +84,7 @@ const ReportOverview = () => {
                         filterOption={(input, option) =>
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
+                        disabled={loading}
                       >
                         <Option value="sunsilk">Sunsilk</Option>
                         <Option value="ps">P/S</Option>
@@ -99,6 +101,7 @@ const ReportOverview = () => {
                         filterOption={(input, option) =>
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
+                        disabled={loading}
                       >
                         <Option value="sunsilk">Sunsilk</Option>
                         <Option value="ps">P/S</Option>
@@ -112,8 +115,10 @@ const ReportOverview = () => {
                   <Col>
                     <Form.Item>
                       <Space size="middle">
-                        <Button icon={<SearchOutlined />}>Tìm kiếm</Button>
-                        <Button icon={<DownloadOutlined />} type="primary">
+                        <Button icon={<SearchOutlined />} disabled={loading}>
+                          Tìm kiếm
+                        </Button>
+                        <Button icon={<DownloadOutlined />} type="primary" disabled={loading}>
                           Export to Excel
                         </Button>
                       </Space>
@@ -123,7 +128,12 @@ const ReportOverview = () => {
               </Form>
 
               {reportOverviewState ? (
-                <Table columns={tblConfigs.columns} dataSource={tblConfigs.data} rowKey="id" />
+                <Table
+                  columns={tblConfigs.columns}
+                  dataSource={tblConfigs.data}
+                  rowKey="id"
+                  loading={loading}
+                />
               ) : null}
             </Col>
           </Row>

@@ -1,3 +1,5 @@
-const initialState = {};
+const initialState = {
+  loading: true,
+};
 
 export default initialState;
