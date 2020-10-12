@@ -1,5 +1,6 @@
 import api from '../../../common/axiosConfig';
 import {
+  request,
   // request,
   success,
   // failure
@@ -16,12 +17,21 @@ import {
   GET_SHOPS_SUCCESS,
   GET_REPORT_OVERVIEW_SUCCESS,
   GET_REPORT_DETAIL_SUCCESS,
+  GET_REPORT_DETAIL_BEGIN,
+  GET_REPORT_OVERVIEW_BEGIN,
+  GET_LIST_USERS_BEGIN,
+  GET_SHOPS_BEGIN,
+  GET_LIST_USERS_FAILURE,
+  GET_SHOPS_FAILURE,
+  GET_REPORT_OVERVIEW_FAILURE,
+  GET_REPORT_DETAIL_FAILURE,
 } from './constants';
 import authActions from '../../auth/redux/actions';
 import downloadXlsFromBase64 from '../../../common/download';
 
 export const getListUsers = () => {
   return (dispatch) => {
+    dispatch(request(GET_LIST_USERS_BEGIN));
     return api()
       .get('users')
       .then((res) => {
@@ -34,6 +44,8 @@ export const getListUsers = () => {
           const { status } = error.response;
           if (status === 401 || status === 500) {
             dispatch(authActions.logout());
+          } else {
+            dispatch(request(GET_LIST_USERS_FAILURE));
           }
         }
       });
@@ -42,6 +54,7 @@ export const getListUsers = () => {
 
 export const getShops = ({ userId }) => {
   return (dispatch) => {
+    dispatch(request(GET_SHOPS_BEGIN));
     return api()
       .get(`shops/index_by_user?user_id=${userId}`)
       .then((res) => {
@@ -54,6 +67,8 @@ export const getShops = ({ userId }) => {
           const { status } = error.response;
           if (status === 401 || status === 500) {
             dispatch(authActions.logout());
+          } else {
+            dispatch(request(GET_SHOPS_FAILURE));
           }
         }
       });
@@ -62,6 +77,7 @@ export const getShops = ({ userId }) => {
 
 export const getReportOverview = () => {
   return (dispatch) => {
+    dispatch(request(GET_REPORT_OVERVIEW_BEGIN));
     return api()
       .get(`reports/qc_summary`)
       .then((res) => {
@@ -74,6 +90,8 @@ export const getReportOverview = () => {
           const { status } = error.response;
           if (status === 401 || status === 500) {
             dispatch(authActions.logout());
+          } else {
+            dispatch(request(GET_REPORT_OVERVIEW_FAILURE));
           }
         }
       });
@@ -82,10 +100,10 @@ export const getReportOverview = () => {
 
 export const getReportDetail = () => {
   return (dispatch) => {
+    dispatch(request(GET_REPORT_DETAIL_BEGIN));
     return api()
       .get(`reports/qc_detail`)
       .then((res) => {
-        console.log('getReportDetail -> res', res);
         dispatch(success(GET_REPORT_DETAIL_SUCCESS, res.data));
         dispatch(authActions.updateAuthorization(res.headers));
       })
@@ -95,6 +113,8 @@ export const getReportDetail = () => {
           const { status } = error.response;
           if (status === 401 || status === 500) {
             dispatch(authActions.logout());
+          } else {
+            dispatch(request(GET_REPORT_DETAIL_FAILURE));
           }
         }
       });

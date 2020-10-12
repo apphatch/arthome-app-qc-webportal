@@ -33,6 +33,7 @@ const ReportDetail = () => {
   const dispatch = useDispatch();
 
   const reportDetailState = useSelector((state) => state.home.reportDetail);
+  const loading = useSelector((state) => state.home.loading);
 
   useEffect(() => {
     dispatch(getReportDetail());
@@ -85,7 +86,7 @@ const ReportDetail = () => {
                 <Row gutter={24}>
                   <Col span={4}>
                     <Form.Item label="Ngày bắt đầu/kết thúc" labelCol={labelCol}>
-                      <RangePicker style={{ width: '100%' }} />
+                      <RangePicker style={{ width: '100%' }} disabled={loading} />
                     </Form.Item>
                   </Col>
                   <Col span={4}>
@@ -97,6 +98,7 @@ const ReportDetail = () => {
                         filterOption={(input, option) =>
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
+                        disabled={loading}
                       >
                         <Option value="sunsilk">Sunsilk</Option>
                         <Option value="ps">P/S</Option>
@@ -113,6 +115,7 @@ const ReportDetail = () => {
                         filterOption={(input, option) =>
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
+                        disabled={loading}
                       >
                         <Option value="sunsilk">Sunsilk</Option>
                         <Option value="ps">P/S</Option>
@@ -129,6 +132,7 @@ const ReportDetail = () => {
                         filterOption={(input, option) =>
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
+                        disabled={loading}
                       >
                         <Option value="sunsilk">Sunsilk</Option>
                         <Option value="ps">P/S</Option>
@@ -145,6 +149,7 @@ const ReportDetail = () => {
                         filterOption={(input, option) =>
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
+                        disabled={loading}
                       >
                         <Option value="sunsilk">Sunsilk</Option>
                         <Option value="ps">P/S</Option>
@@ -161,6 +166,7 @@ const ReportDetail = () => {
                         filterOption={(input, option) =>
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
+                        disabled={loading}
                       >
                         <Option value="sunsilk">Sunsilk</Option>
                         <Option value="ps">P/S</Option>
@@ -172,12 +178,12 @@ const ReportDetail = () => {
                 <Row gutter={24}>
                   <Col span={4}>
                     <Form.Item label="Tên/Mã nhân viên" labelCol={labelCol}>
-                      <Input placeholder="" />
+                      <Input placeholder="" disabled={loading} />
                     </Form.Item>
                   </Col>
                   <Col span={4}>
                     <Form.Item label="Tên/Mã cửa hàng" labelCol={labelCol}>
-                      <Input placeholder="" />
+                      <Input placeholder="" disabled={loading} />
                     </Form.Item>
                   </Col>
                   <Col span={4}>
@@ -189,6 +195,7 @@ const ReportDetail = () => {
                         filterOption={(input, option) =>
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
+                        disabled={loading}
                       >
                         <Option value="sunsilk">Sunsilk</Option>
                         <Option value="ps">P/S</Option>
@@ -205,6 +212,7 @@ const ReportDetail = () => {
                         filterOption={(input, option) =>
                           option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                         }
+                        disabled={loading}
                       >
                         <Option value="sunsilk">Sunsilk</Option>
                         <Option value="ps">P/S</Option>
@@ -218,8 +226,10 @@ const ReportDetail = () => {
                   <Col>
                     <Form.Item>
                       <Space size="middle">
-                        <Button icon={<SearchOutlined />}>Tìm kiếm</Button>
-                        <Button icon={<DownloadOutlined />} type="primary">
+                        <Button icon={<SearchOutlined />} disabled={loading}>
+                          Tìm kiếm
+                        </Button>
+                        <Button icon={<DownloadOutlined />} type="primary" disabled={loading}>
                           Export to Excel
                         </Button>
                       </Space>
@@ -227,7 +237,12 @@ const ReportDetail = () => {
                   </Col>
                 </Row>
               </Form>
-              <Table columns={tblConfigs.columns} dataSource={tblConfigs.data} rowKey="id" />
+              <Table
+                columns={tblConfigs.columns}
+                dataSource={tblConfigs.data}
+                rowKey="id"
+                loading={loading}
+              />
             </Col>
           </Row>
         </Card>

@@ -75,6 +75,7 @@ const Shops = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const homeState = useSelector((state) => state.home);
+  const loading = useSelector((state) => state.home.loading);
 
   useEffect(() => {
     dispatch(getShops({ userId: user.user_id }));
@@ -107,17 +108,17 @@ const Shops = () => {
                 <Row gutter={24}>
                   <Col span={4}>
                     <Form.Item label="Ngày bắt đầu/kết thúc" labelCol={labelCol}>
-                      <RangePicker />
+                      <RangePicker disabled={loading} />
                     </Form.Item>
                   </Col>
                   <Col span={4}>
                     <Form.Item label="Tên/Mã nhân viên" labelCol={labelCol}>
-                      <Input placeholder="Name or employee ID" />
+                      <Input placeholder="Name or employee ID" disabled={loading} />
                     </Form.Item>
                   </Col>
                   <Col span={4}>
                     <Form.Item label="Tên/Mã cửa hàng" labelCol={labelCol}>
-                      <Input placeholder="Name or shop ID" />
+                      <Input placeholder="Name or shop ID" disabled={loading} />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -132,6 +133,7 @@ const Shops = () => {
                           marginLeft: 10,
                         }}
                         icon={<PlusOutlined />}
+                        disabled={loading}
                       >
                         Add new
                       </Button>
@@ -140,6 +142,7 @@ const Shops = () => {
                           marginLeft: 10,
                         }}
                         icon={<DownloadOutlined />}
+                        disabled={loading}
                       >
                         Export to Excel
                       </Button>
@@ -147,7 +150,12 @@ const Shops = () => {
                   </Col>
                 </Row>
               </Form>
-              <Table columns={columns} dataSource={homeState.shops || []} rowKey="id" />
+              <Table
+                columns={columns}
+                dataSource={homeState.shops || []}
+                rowKey="id"
+                loading={loading}
+              />
             </Col>
           </Row>
         </Card>

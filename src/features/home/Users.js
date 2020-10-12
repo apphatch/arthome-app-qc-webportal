@@ -82,7 +82,7 @@ const Users = () => {
   const [formCreate] = Form.useForm();
   const dispatch = useDispatch();
   const { users } = useSelector((state) => state.home);
-  console.log('Users -> users', users);
+  const loading = useSelector((state) => state.home.loading);
 
   const [visible, setVisible] = React.useState(false);
   const [titleForm, setTitleForm] = React.useState('Add User');
@@ -155,12 +155,12 @@ const Users = () => {
                 <Row gutter={24}>
                   <Col span={4}>
                     <Form.Item label="Ngày bắt đầu/kết thúc" labelCol={labelCol}>
-                      <RangePicker />
+                      <RangePicker disabled={loading} />
                     </Form.Item>
                   </Col>
                   <Col span={4}>
                     <Form.Item label="Mã nhân viên" labelCol={labelCol}>
-                      <Input placeholder="Name or employee ID" />
+                      <Input placeholder="Name or employee ID" disabled={loading} />
                     </Form.Item>
                   </Col>
                 </Row>
@@ -168,7 +168,9 @@ const Users = () => {
                 <Row gutter={24} justify="end">
                   <Col>
                     <Form.Item>
-                      <Button icon={<SearchOutlined />}>Search</Button>
+                      <Button icon={<SearchOutlined />} disabled={loading}>
+                        Search
+                      </Button>
                       <Button
                         type="primary"
                         style={{
@@ -176,6 +178,7 @@ const Users = () => {
                         }}
                         icon={<PlusOutlined />}
                         onClick={() => showModal(false)}
+                        disabled={loading}
                       >
                         Add new
                       </Button>
@@ -183,7 +186,7 @@ const Users = () => {
                   </Col>
                 </Row>
               </Form>
-              <Table columns={columns} dataSource={users || []} rowKey="id" />
+              <Table columns={columns} dataSource={users || []} rowKey="id" loading={loading} />
             </Col>
           </Row>
         </Card>
