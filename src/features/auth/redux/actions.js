@@ -8,46 +8,45 @@ import {
 } from './constants';
 import history from '../../../common/history';
 
-const login = data => {
-  return dispatch => {
+const login = (data) => {
+  return (dispatch) => {
     dispatch(request(AUTH_LOGIN_REQUEST));
     return api()
       .post('login', data)
-      .then(res => {
+      .then((res) => {
         console.log(res);
         const data = {
           user: res.data,
           headers: {
             Authorization: res.headers['authorization'],
-            'X-CSRF-Token': res.headers['x-csrf-token'],
           },
         };
         dispatch(success(AUTH_LOGIN_SUCCESS, data));
         history.go('/');
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error.response);
       });
   };
 };
 
-const updateAuthorization = headers => {
-  return dispatch => {
+const updateAuthorization = (headers) => {
+  return (dispatch) => {
     dispatch(success(UPDATE_AUTH_HEADERS, headers['authorization']));
   };
 };
 
 const logout = () => {
-  return dispatch => {
+  return (dispatch) => {
     return api()
       .get('logout')
-      .then(res => {
+      .then((res) => {
         console.log(res);
         const data = {};
         dispatch(success(AUTH_LOGOUT, data));
         window.location.reload(false);
       })
-      .catch(error => {
+      .catch((error) => {
         const { status } = error.response;
         if (status === 401 || status === 500) {
           localStorage.removeItem('persist:root');
@@ -57,29 +56,29 @@ const logout = () => {
   };
 };
 
-const register = data => {
-  return dispatch => {
+const register = (data) => {
+  return (dispatch) => {
     return api()
       .post('users', data)
-      .then(res => {
+      .then((res) => {
         console.log(res);
         dispatch(updateAuthorization(res.headers));
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error.response);
       });
   };
 };
 
 const getUserDetails = () => {
-  return dispatch => {
+  return (dispatch) => {
     return api()
       .get('users')
-      .then(res => {
+      .then((res) => {
         console.log(res);
         dispatch(updateAuthorization(res.headers));
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error.response);
       });
   };
