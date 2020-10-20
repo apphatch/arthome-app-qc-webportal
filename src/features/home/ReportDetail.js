@@ -76,16 +76,21 @@ const ReportDetail = () => {
 
       const columns = firstItem.map((item) => {
         const unique = [...new Set(tblData.map((data) => data[item]))];
+        const filters = unique.filter((value) => {
+          return value !== null && value !== '';
+        });
         return {
           title: item,
           dataIndex: item,
           key: item,
-          filters: unique.map((value) => {
-            return {
-              text: value,
-              value: value,
-            };
-          }),
+          filters:
+            filters.length > 0 &&
+            filters.map((value) => {
+              return {
+                text: value,
+                value: value,
+              };
+            }),
           onFilter: (value, record) => record[item].indexOf(value) === 0,
         };
       });
