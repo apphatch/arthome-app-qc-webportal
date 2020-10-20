@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import _, { uniq } from 'lodash';
 import {
   Row,
   Col,
@@ -11,6 +12,7 @@ import {
   DatePicker,
   Typography,
   Select,
+  Menu,
   // Tag,
   // Image,
 } from 'antd';
@@ -27,8 +29,26 @@ const labelCol = {
   span: 24,
 };
 
+const filterData = (datas, value, fields) => {
+  let filteredData = [];
+  fields.forEach((field) => {
+    if (filteredData.length === 0) {
+      filteredData = datas.filter((data) => {
+        if (data.children) {
+          data.children = filterData(data.children, value, field);
+        }
+        return data[field.key]
+          ? data[field.key].toString().toLowerCase().includes(value.toLowerCase())
+          : '';
+      });
+    }
+  });
+
+  return filteredData;
+};
+
 const ReportDetail = () => {
-  const [form] = Form.useForm();
+  // const [form] = Form.useForm();
 
   const dispatch = useDispatch();
 
@@ -42,11 +62,6 @@ const ReportDetail = () => {
   const tblConfigs = useMemo(() => {
     if (reportDetailState) {
       const firstItem = reportDetailState[0];
-      const columns = firstItem.map((item) => ({
-        title: item,
-        dataIndex: item,
-        key: item,
-      }));
       const data = reportDetailState.filter((_, index) => index !== 0);
       const tblData = data.map((item) => {
         let obj = {
@@ -58,6 +73,23 @@ const ReportDetail = () => {
 
         return obj;
       });
+
+      const columns = firstItem.map((item) => {
+        const unique = [...new Set(tblData.map((data) => data[item]))];
+        return {
+          title: item,
+          dataIndex: item,
+          key: item,
+          filters: unique.map((value) => {
+            return {
+              text: value,
+              value: value,
+            };
+          }),
+          onFilter: (value, record) => record[item].indexOf(value) === 0,
+        };
+      });
+
       return {
         columns,
         data: tblData,
@@ -72,7 +104,12 @@ const ReportDetail = () => {
         <Card title="Báo cáo chi tiết" bordered={false} style={{ width: '100%' }}>
           <Row>
             <Col span={24}>
-              <Form form={form} initialValues={{}} onValuesChange={() => {}}>
+              {/* <Form
+                form={form}
+                initialValues={{}}
+                onValuesChange={() => {}}
+                onFinish={onChangeSearch}
+              >
                 <Row gutter={24}>
                   <Paragraph
                     strong
@@ -85,12 +122,16 @@ const ReportDetail = () => {
                 </Row>
                 <Row gutter={24}>
                   <Col span={4}>
-                    <Form.Item label="Ngày bắt đầu/kết thúc" labelCol={labelCol}>
+                    <Form.Item
+                      name="startenddate"
+                      label="Ngày bắt đầu/kết thúc"
+                      labelCol={labelCol}
+                    >
                       <RangePicker style={{ width: '100%' }} disabled={loading} />
                     </Form.Item>
                   </Col>
                   <Col span={4}>
-                    <Form.Item label="Ngành hàng" labelCol={labelCol}>
+                    <Form.Item name="bank" label="Ngành hàng" labelCol={labelCol}>
                       <Select
                         showSearch
                         placeholder="Chọn ngành hàng"
@@ -107,7 +148,7 @@ const ReportDetail = () => {
                     </Form.Item>
                   </Col>
                   <Col span={4}>
-                    <Form.Item label="Nhãn hàng" labelCol={labelCol}>
+                    <Form.Item name="label" label="Nhãn hàng" labelCol={labelCol}>
                       <Select
                         showSearch
                         placeholder="Chọn nhãn hàng"
@@ -124,7 +165,7 @@ const ReportDetail = () => {
                     </Form.Item>
                   </Col>
                   <Col span={4}>
-                    <Form.Item label="SKU" labelCol={labelCol}>
+                    <Form.Item name="sku" label="SKU" labelCol={labelCol}>
                       <Select
                         showSearch
                         placeholder="Chọn SKU"
@@ -141,7 +182,7 @@ const ReportDetail = () => {
                     </Form.Item>
                   </Col>
                   <Col span={4}>
-                    <Form.Item label="Mức cảnh báo" labelCol={labelCol}>
+                    <Form.Item name="warning" label="Mức cảnh báo" labelCol={labelCol}>
                       <Select
                         showSearch
                         placeholder="Chọn mức cảnh báo"
@@ -158,7 +199,7 @@ const ReportDetail = () => {
                     </Form.Item>
                   </Col>
                   <Col span={4}>
-                    <Form.Item label="Lỗi" labelCol={labelCol}>
+                    <Form.Item name="error" label="Lỗi" labelCol={labelCol}>
                       <Select
                         showSearch
                         placeholder="Chọn lỗi"
@@ -177,17 +218,17 @@ const ReportDetail = () => {
                 </Row>
                 <Row gutter={24}>
                   <Col span={4}>
-                    <Form.Item label="Tên/Mã nhân viên" labelCol={labelCol}>
+                    <Form.Item name="staffname" label="Tên/Mã nhân viên" labelCol={labelCol}>
                       <Input placeholder="" disabled={loading} />
                     </Form.Item>
                   </Col>
                   <Col span={4}>
-                    <Form.Item label="Tên/Mã cửa hàng" labelCol={labelCol}>
+                    <Form.Item name="shopname" label="Tên/Mã cửa hàng" labelCol={labelCol}>
                       <Input placeholder="" disabled={loading} />
                     </Form.Item>
                   </Col>
                   <Col span={4}>
-                    <Form.Item label="Loại cửa hàng" labelCol={labelCol}>
+                    <Form.Item name="shoptype" label="Loại cửa hàng" labelCol={labelCol}>
                       <Select
                         showSearch
                         placeholder="Chọn loại"
@@ -204,7 +245,7 @@ const ReportDetail = () => {
                     </Form.Item>
                   </Col>
                   <Col span={4}>
-                    <Form.Item label="Địa điểm" labelCol={labelCol}>
+                    <Form.Item name="address" label="Địa điểm" labelCol={labelCol}>
                       <Select
                         showSearch
                         placeholder="Chọn địa điểm"
@@ -226,7 +267,7 @@ const ReportDetail = () => {
                   <Col>
                     <Form.Item>
                       <Space size="middle">
-                        <Button icon={<SearchOutlined />} disabled={loading}>
+                        <Button icon={<SearchOutlined />} disabled={loading} htmlType="submit">
                           Tìm kiếm
                         </Button>
                         <Button icon={<DownloadOutlined />} type="primary" disabled={loading}>
@@ -236,8 +277,21 @@ const ReportDetail = () => {
                     </Form.Item>
                   </Col>
                 </Row>
-              </Form>
+              </Form> */}
+              <Row gutter={[16, 16]} justify="end">
+                <Col span={4}>
+                  <Button
+                    icon={<DownloadOutlined />}
+                    type="primary"
+                    disabled={loading}
+                    style={{ width: '100%' }}
+                  >
+                    Export to Excel
+                  </Button>
+                </Col>
+              </Row>
               <Table
+                className="data-table"
                 columns={tblConfigs.columns}
                 dataSource={tblConfigs.data}
                 rowKey="id"
