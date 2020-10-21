@@ -28,11 +28,6 @@ const ReportOverview = () => {
   const tblConfigs = useMemo(() => {
     if (reportOverviewState) {
       const firstItem = reportOverviewState[0];
-      const columns = firstItem.map((item) => ({
-        title: item,
-        dataIndex: item,
-        key: item,
-      }));
       const data = reportOverviewState.filter((_, index) => index !== 0);
       const tblData = data.map((item) => {
         let obj = {
@@ -43,6 +38,26 @@ const ReportOverview = () => {
         });
 
         return obj;
+      });
+      const columns = firstItem.map((item) => {
+        const unique = [...new Set(tblData.map((data) => data[item]))];
+        const filters = unique.filter((value) => {
+          return value !== null && value !== '';
+        });
+        return {
+          title: item,
+          dataIndex: item,
+          key: item,
+          filters:
+            filters.length > 0 &&
+            filters.map((value) => {
+              return {
+                text: value,
+                value: value,
+              };
+            }),
+          onFilter: (value, record) => record[item].indexOf(value) === 0,
+        };
       });
       return {
         columns,
@@ -129,6 +144,7 @@ const ReportOverview = () => {
 
               {reportOverviewState ? (
                 <Table
+                  className="data-table"
                   columns={tblConfigs.columns}
                   dataSource={tblConfigs.data}
                   rowKey="id"
