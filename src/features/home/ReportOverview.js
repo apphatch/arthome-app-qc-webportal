@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import moment from 'moment';
 import { Row, Col, Card, Table, Button, Form, Space, DatePicker, Typography, Select } from 'antd';
 import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -67,13 +68,25 @@ const ReportOverview = () => {
     return [];
   }, [reportOverviewState]);
 
+  const onChangeSearch = (values) => {
+    let date_from;
+    let date_to;
+
+    if (values && values.startenddate) {
+      date_from = moment.utc(values.startenddate[0]).format('DD/MM/YYYY');
+      date_to = moment.utc(values.startenddate[1]).format('DD/MM/YYYY');
+    }
+
+    dispatch(getReportOverview(date_from, date_to));
+  };
+
   return (
     <Row>
       <Col span={24}>
         <Card title="Báo cáo tóm tắt" bordered={false} style={{ width: '100%' }}>
           <Row>
             <Col span={24}>
-              <Form form={form} initialValues={{}} onValuesChange={() => {}}>
+              <Form form={form} onFinish={onChangeSearch}>
                 <Row gutter={24}>
                   <Paragraph
                     strong
@@ -85,12 +98,20 @@ const ReportOverview = () => {
                   </Paragraph>
                 </Row>
                 <Row gutter={24}>
-                  <Col span={4}>
-                    <Form.Item label="Ngày bắt đầu/kết thúc" labelCol={labelCol}>
-                      <RangePicker disabled={loading} />
+                  <Col span={12}>
+                    <Form.Item
+                      name="startenddate"
+                      label="Ngày bắt đầu/kết thúc"
+                      labelCol={labelCol}
+                    >
+                      <RangePicker
+                        style={{ width: '100%' }}
+                        disabled={loading}
+                        format="DD/MM/YYYY"
+                      />
                     </Form.Item>
                   </Col>
-                  <Col span={4}>
+                  {/* <Col span={4}>
                     <Form.Item label="Mã nhân viên" labelCol={labelCol}>
                       <Select
                         showSearch
@@ -123,14 +144,14 @@ const ReportOverview = () => {
                         <Option value="cif">Cif</Option>
                       </Select>
                     </Form.Item>
-                  </Col>
+                  </Col> */}
                 </Row>
 
                 <Row justify="end">
                   <Col>
                     <Form.Item>
                       <Space size="middle">
-                        <Button icon={<SearchOutlined />} disabled={loading}>
+                        <Button icon={<SearchOutlined />} disabled={loading} htmlType="submit">
                           Tìm kiếm
                         </Button>
                         <Button icon={<DownloadOutlined />} type="primary" disabled={loading}>

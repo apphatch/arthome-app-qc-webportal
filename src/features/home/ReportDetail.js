@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import _, { uniq } from 'lodash';
+import moment from 'moment';
 import {
   Row,
   Col,
@@ -48,7 +48,7 @@ const filterData = (datas, value, fields) => {
 };
 
 const ReportDetail = () => {
-  // const [form] = Form.useForm();
+  const [form] = Form.useForm();
 
   const dispatch = useDispatch();
 
@@ -103,13 +103,25 @@ const ReportDetail = () => {
     return [];
   }, [reportDetailState]);
 
+  const onChangeSearch = (values) => {
+    let date_from;
+    let date_to;
+
+    if (values && values.startenddate) {
+      date_from = moment.utc(values.startenddate[0]).format('DD/MM/YYYY');
+      date_to = moment.utc(values.startenddate[1]).format('DD/MM/YYYY');
+    }
+
+    dispatch(getReportDetail(date_from, date_to));
+  };
+
   return (
     <Row>
       <Col span={24}>
         <Card title="Báo cáo chi tiết" bordered={false} style={{ width: '100%' }}>
           <Row>
             <Col span={24}>
-              {/* <Form
+              <Form
                 form={form}
                 initialValues={{}}
                 onValuesChange={() => {}}
@@ -126,16 +138,20 @@ const ReportDetail = () => {
                   </Paragraph>
                 </Row>
                 <Row gutter={24}>
-                  <Col span={4}>
+                  <Col span={12}>
                     <Form.Item
                       name="startenddate"
                       label="Ngày bắt đầu/kết thúc"
                       labelCol={labelCol}
                     >
-                      <RangePicker style={{ width: '100%' }} disabled={loading} />
+                      <RangePicker
+                        style={{ width: '100%' }}
+                        disabled={loading}
+                        format="DD/MM/YYYY"
+                      />
                     </Form.Item>
                   </Col>
-                  <Col span={4}>
+                  {/* <Col span={4}>
                     <Form.Item name="bank" label="Ngành hàng" labelCol={labelCol}>
                       <Select
                         showSearch
@@ -219,9 +235,9 @@ const ReportDetail = () => {
                         <Option value="cif">Cif</Option>
                       </Select>
                     </Form.Item>
-                  </Col>
+                  </Col> */}
                 </Row>
-                <Row gutter={24}>
+                {/* <Row gutter={24}>
                   <Col span={4}>
                     <Form.Item name="staffname" label="Tên/Mã nhân viên" labelCol={labelCol}>
                       <Input placeholder="" disabled={loading} />
@@ -266,7 +282,7 @@ const ReportDetail = () => {
                       </Select>
                     </Form.Item>
                   </Col>
-                </Row>
+                </Row> */}
 
                 <Row justify="end">
                   <Col>
@@ -282,7 +298,7 @@ const ReportDetail = () => {
                     </Form.Item>
                   </Col>
                 </Row>
-              </Form> */}
+              </Form>
               <Row gutter={[16, 16]} justify="end">
                 <Col span={4}>
                   <Button

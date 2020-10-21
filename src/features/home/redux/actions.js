@@ -52,11 +52,11 @@ export const getListUsers = () => {
   };
 };
 
-export const getShops = ({ userId }) => {
+export const getShops = () => {
   return (dispatch) => {
     dispatch(request(GET_SHOPS_BEGIN));
     return api()
-      .get(`shops/index_by_user?user_id=${userId}`)
+      .get(`shops`)
       .then((res) => {
         dispatch(success(GET_SHOPS_SUCCESS, res.data));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -75,11 +75,51 @@ export const getShops = ({ userId }) => {
   };
 };
 
-export const getReportOverview = () => {
+export const addShop = (data) => {
+  return (dispatch) => {
+    return api()
+      .post(`shops`, data)
+      .then((res) => {
+        dispatch(authActions.updateAuthorization(res.headers));
+        return res;
+      })
+      .catch((error) => {
+        console.log('addShop -> error', error);
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
+};
+
+export const editShop = (shopId, data) => {
+  return (dispatch) => {
+    return api()
+      .put(`shops/${shopId}`, data)
+      .then((res) => {
+        dispatch(authActions.updateAuthorization(res.headers));
+        return res;
+      })
+      .catch((error) => {
+        console.log('editShop -> error', error);
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
+};
+
+export const getReportOverview = (date_from, date_to) => {
   return (dispatch) => {
     dispatch(request(GET_REPORT_OVERVIEW_BEGIN));
     return api()
-      .get(`reports/qc_summary`)
+      .get(`reports/qc_summary?date_from=${date_from}&date_to=${date_to}`)
       .then((res) => {
         dispatch(success(GET_REPORT_OVERVIEW_SUCCESS, res.data));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -98,11 +138,11 @@ export const getReportOverview = () => {
   };
 };
 
-export const getReportDetail = () => {
+export const getReportDetail = (date_from, date_to) => {
   return (dispatch) => {
     dispatch(request(GET_REPORT_DETAIL_BEGIN));
     return api()
-      .get(`reports/qc_detail`)
+      .get(`reports/qc_detail?date_from=${date_from}&date_to=${date_to}`)
       .then((res) => {
         dispatch(success(GET_REPORT_DETAIL_SUCCESS, res.data));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -384,6 +424,9 @@ const downloadShopTemplate = () => {
 };
 
 const homeActions = {
+  getShops,
+  addShop,
+  editShop,
   getListUsers,
   uploadStocks,
   uploadChecklists,
