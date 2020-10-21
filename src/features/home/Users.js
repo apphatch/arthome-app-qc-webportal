@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import _ from 'lodash';
 import {
   Row,
   Col,
@@ -13,60 +14,12 @@ import {
   Modal,
 } from 'antd';
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
-import { useDispatch, useSelector } from 'react-redux';
-import { getListUsers } from './redux/actions';
+import { connect, useSelector } from 'react-redux';
+import homeActions from './redux/actions';
+import authActions from '../auth/redux/actions';
 
 const { RangePicker } = DatePicker;
 const { Paragraph } = Typography;
-
-const columns = [
-  {
-    title: 'No',
-    dataIndex: 'id',
-    key: 'id',
-  },
-  {
-    title: 'Full name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: 'Username',
-    dataIndex: 'username',
-    key: 'username',
-  },
-  // {
-  //   title: 'Address',
-  //   dataIndex: 'address',
-  //   key: 'address',
-  // },
-  // {
-  //   title: 'District',
-  //   dataIndex: 'district',
-  //   key: 'district',
-  // },
-  // {
-  //   title: 'Phone Number',
-  //   dataIndex: 'phoneNumber',
-  //   key: 'phoneNumber',
-  // },
-  {
-    title: 'Actions',
-    dataIndex: 'actions',
-    render: (_, record) => {
-      return (
-        <Space size="middle">
-          <Button type="link" onClick={() => {}}>
-            Edit
-          </Button>
-          <Button type="link" onClick={() => {}}>
-            Delete
-          </Button>
-        </Space>
-      );
-    },
-  },
-];
 
 const layout = {
   labelCol: { span: 8 },
@@ -77,20 +30,14 @@ const labelCol = {
   span: 24,
 };
 
-const Users = () => {
+const Users = ({ dispatch, home }) => {
   const [form] = Form.useForm();
   const [formCreate] = Form.useForm();
-  const dispatch = useDispatch();
-  const { users } = useSelector((state) => state.home);
   const loading = useSelector((state) => state.home.loading);
 
   const [visible, setVisible] = React.useState(false);
   const [titleForm, setTitleForm] = React.useState('Add User');
-  const [
-    ,
-    // userId
-    setUserId,
-  ] = React.useState();
+  const [userId, setUserId] = React.useState();
   const [formFields, setFormFields] = React.useState([
     { name: ['name'], value: '' },
     { name: ['username'], value: '' },
@@ -98,13 +45,45 @@ const Users = () => {
     { name: ['importing_id'], value: '' },
   ]);
 
-  useEffect(() => {
-    dispatch(getListUsers());
+  const columns = [
+    {
+      title: 'Username',
+      dataIndex: 'username',
+      key: 'username',
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Importing ID',
+      dataIndex: 'importing_id',
+      key: 'importing_id',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => (
+        <Space size="middle">
+          <Button type="link" onClick={() => showModal(record)}>
+            Edit
+          </Button>
+          <Button type="link" onClick={() => {}}>
+            Delete
+          </Button>
+        </Space>
+      ),
+    },
+  ];
+
+  React.useEffect(() => {
+    dispatch(homeActions.getListUsers());
   }, [dispatch]);
 
   const showModal = (data) => {
     setVisible(true);
-    form.resetFields();
+    formCreate.resetFields();
     if (data) {
       setUserId(data.id);
       const newFields = [
@@ -126,11 +105,18 @@ const Users = () => {
   };
 
   const onAddUser = (values) => {
-    console.log('Users -> values', values);
+    dispatch(authActions.register(values)).then((res) => {
+      handleCancel();
+      dispatch(homeActions.getListUsers());
+    });
   };
 
   const onEditUser = (values) => {
-    console.log('Users -> values', values);
+    const newValues = _.pickBy(values, (v) => v !== '');
+    dispatch(homeActions.editUser(userId, newValues)).then((res) => {
+      handleCancel();
+      dispatch(homeActions.getListUsers());
+    });
   };
 
   return (
@@ -177,7 +163,7 @@ const Users = () => {
                           marginLeft: 10,
                         }}
                         icon={<PlusOutlined />}
-                        onClick={() => showModal(false)}
+                        onClick={() => showModal()}
                         disabled={loading}
                       >
                         Add new
@@ -186,7 +172,12 @@ const Users = () => {
                   </Col>
                 </Row>
               </Form>
-              <Table columns={columns} dataSource={users || []} rowKey="id" loading={loading} />
+              <Table
+                columns={columns}
+                dataSource={home.users || []}
+                rowKey="id"
+                loading={loading}
+              />
             </Col>
           </Row>
         </Card>
@@ -203,7 +194,7 @@ const Users = () => {
             .validateFields()
             .then((values) => {
               if (titleForm === 'Add User') {
-                form.resetFields();
+                formCreate.resetFields();
                 onAddUser(values);
               } else {
                 onEditUser(values);
@@ -261,4 +252,9 @@ const Users = () => {
   );
 };
 
-export default Users;
+const mapStateToProps = (state) => {
+  return {
+    home: state.home,
+  };
+};
+export default connect(mapStateToProps)(Users);

@@ -201,6 +201,7 @@ const editUser = (userId, data) => {
         // dispatch(success(EDIT_USER_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
         console.log(res);
+        return res;
       })
       .catch((error) => {
         const { status } = error.response;
