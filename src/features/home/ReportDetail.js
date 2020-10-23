@@ -24,6 +24,7 @@ import { random as fakerRandom } from 'faker';
 const { RangePicker } = DatePicker;
 const { Paragraph } = Typography;
 const { Option } = Select;
+const url = process.env.REACT_APP_API_URL;
 
 const labelCol = {
   span: 24,
@@ -84,6 +85,7 @@ const ReportDetail = () => {
           dataIndex: item,
           key: item,
           filters:
+            item !== 'Hình ảnh' &&
             filters.length > 0 &&
             filters.map((value) => {
               return {
@@ -95,7 +97,7 @@ const ReportDetail = () => {
           render: (value) => {
             if (item === 'Hình ảnh') {
               if (value) {
-                return <Image src={`${value}`} height={90} width={60} preview={true} />;
+                return <Image src={`${url}${value}`} height={90} width={60} preview={true} />;
               }
             }
             return value;
