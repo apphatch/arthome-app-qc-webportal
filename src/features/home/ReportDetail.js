@@ -14,7 +14,7 @@ import {
   Select,
   Menu,
   // Tag,
-  // Image,
+  Image,
 } from 'antd';
 import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -92,6 +92,14 @@ const ReportDetail = () => {
               };
             }),
           onFilter: (value, record) => record[item].indexOf(value) === 0,
+          render: (value) => {
+            if (item === 'Hình ảnh') {
+              if (value) {
+                return <Image src={`${value}`} height={90} width={60} preview={true} />;
+              }
+            }
+            return value;
+          },
         };
       });
 
