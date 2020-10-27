@@ -35,7 +35,7 @@ const ReportOverview = () => {
           id: fakerRandom.uuid(),
         };
         item.forEach((val, idx) => {
-          obj[firstItem[idx]] = val;
+          obj[firstItem[idx]] = String(val);
         });
 
         return obj;
