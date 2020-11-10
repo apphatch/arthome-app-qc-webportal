@@ -218,7 +218,7 @@ const uploadChecklistItems = (data) => {
 const uploadFull = (data) => {
   return (dispatch) => {
     return api('multipart/form-data')
-      .post('shops/import_osa', data)
+      .post('shops/import', data)
       .then((res) => {
         dispatch(success(IMPORT_SHOPS_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
