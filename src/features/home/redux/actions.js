@@ -164,7 +164,7 @@ export const getReportDetail = (date_from, date_to) => {
 const uploadStocks = (data) => {
   return (dispatch) => {
     return api()
-      .post('stocks/import', data)
+      .post('io/stock_import', data)
       .then((res) => {
         dispatch(success(IMPORT_STOCKS_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -182,7 +182,7 @@ const uploadStocks = (data) => {
 const uploadChecklists = (data) => {
   return (dispatch) => {
     return api()
-      .post('checklists/import', data)
+      .post('io/checklist_import', data)
       .then((res) => {
         dispatch(success(IMPORT_CHECKLISTS_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -200,7 +200,7 @@ const uploadChecklists = (data) => {
 const uploadChecklistItems = (data) => {
   return (dispatch) => {
     return api()
-      .post('checklist_items/import', data)
+      .post('io/checklist_item_import', data)
       .then((res) => {
         dispatch(success(IMPORT_CHECKLIST_ITEMS_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
@@ -291,7 +291,7 @@ const unlockUser = (userId) => {
 const uploadUsers = (data) => {
   return (dispatch) => {
     return api()
-      .post('users/import', data)
+      .post('io/user_import', data)
       .then((res) => {
         dispatch(success(IMPORT_USERS_SUCCESS, res.status));
         dispatch(authActions.updateAuthorization(res.headers));
