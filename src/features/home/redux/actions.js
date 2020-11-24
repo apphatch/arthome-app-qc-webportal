@@ -331,7 +331,7 @@ const getCheckInCheckOut = () => {
 const downloadUserTemplate = () => {
   return (dispatch) => {
     return api()
-      .get('users/import_template')
+      .get('io/user_import/template')
       .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'user_template', 'xls');
@@ -350,7 +350,7 @@ const downloadUserTemplate = () => {
 const downloadStockTemplate = () => {
   return (dispatch) => {
     return api()
-      .get('stocks/import_template')
+      .get('io/stock_import/template')
       .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'stock_template', 'xls');
@@ -369,7 +369,7 @@ const downloadStockTemplate = () => {
 const downloadCheckListTemplate = () => {
   return (dispatch) => {
     return api()
-      .get('checklists/import_template')
+      .get('io/checklist_import/template')
       .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'checklist_template', 'xls');
@@ -388,7 +388,7 @@ const downloadCheckListTemplate = () => {
 const downloadChecklistItemsTemplate = () => {
   return (dispatch) => {
     return api()
-      .get('checklist_items/import_template')
+      .get('io/checklist_item_import/template')
       .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'checklist_item_template', 'xls');
@@ -407,7 +407,7 @@ const downloadChecklistItemsTemplate = () => {
 const downloadShopTemplate = () => {
   return (dispatch) => {
     return api()
-      .get('shops/import_template')
+      .get('io/shop_import/template')
       .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'shop_template', 'xls');
