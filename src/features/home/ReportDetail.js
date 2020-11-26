@@ -18,7 +18,7 @@ import {
 } from 'antd';
 import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { getReportDetail } from './redux/actions';
+import { getReportDetail, exportToExcel } from './redux/actions';
 import { random as fakerRandom } from 'faker';
 
 const { RangePicker } = DatePicker;
@@ -123,6 +123,10 @@ const ReportDetail = () => {
     }
 
     dispatch(getReportDetail(date_from, date_to));
+  };
+
+  const exportExcel = () => {
+    dispatch(exportToExcel());
   };
 
   return (
@@ -301,7 +305,12 @@ const ReportDetail = () => {
                         <Button icon={<SearchOutlined />} disabled={loading} htmlType="submit">
                           Tìm kiếm
                         </Button>
-                        <Button icon={<DownloadOutlined />} type="primary" disabled={loading}>
+                        <Button
+                          icon={<DownloadOutlined />}
+                          type="primary"
+                          disabled={loading}
+                          onClick={exportExcel}
+                        >
                           Export to Excel
                         </Button>
                       </Space>
@@ -309,18 +318,6 @@ const ReportDetail = () => {
                   </Col>
                 </Row>
               </Form>
-              <Row gutter={[16, 16]} justify="end">
-                <Col span={4}>
-                  <Button
-                    icon={<DownloadOutlined />}
-                    type="primary"
-                    disabled={loading}
-                    style={{ width: '100%' }}
-                  >
-                    Export to Excel
-                  </Button>
-                </Col>
-              </Row>
               <Table
                 className="data-table"
                 columns={tblConfigs.columns}

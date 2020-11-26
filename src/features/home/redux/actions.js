@@ -423,6 +423,25 @@ const downloadShopTemplate = () => {
   };
 };
 
+export const exportToExcel = () => {
+  return (dispatch) => {
+    return api()
+      .get('io/qc_export')
+      .then((res) => {
+        dispatch(authActions.updateAuthorization(res.headers));
+        downloadXlsFromBase64(res.data, 'export', 'xls');
+      })
+      .catch((error) => {
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
+};
+
 const homeActions = {
   getShops,
   addShop,
@@ -442,6 +461,7 @@ const homeActions = {
   downloadCheckListTemplate,
   downloadChecklistItemsTemplate,
   downloadShopTemplate,
+  exportToExcel,
 };
 
 export default homeActions;
