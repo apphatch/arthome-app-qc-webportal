@@ -423,10 +423,10 @@ const downloadShopTemplate = () => {
   };
 };
 
-export const exportToExcel = () => {
+export const exportToExcel = (date_from, date_to) => {
   return (dispatch) => {
     return api()
-      .get('io/qc_export')
+      .get(`io/qc_export?date_from=${date_from}&date_to=${date_to}`)
       .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'export', 'xls');

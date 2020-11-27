@@ -126,7 +126,14 @@ const ReportDetail = () => {
   };
 
   const exportExcel = () => {
-    dispatch(exportToExcel());
+    const { startenddate } = form.getFieldsValue();
+    let date_from;
+    let date_to;
+    if (startenddate) {
+      date_from = moment.utc(startenddate[0]).format('DD/MM/YYYY');
+      date_to = moment.utc(startenddate[1]).format('DD/MM/YYYY');
+    }
+    dispatch(exportToExcel(date_from, date_to));
   };
 
   return (
