@@ -445,7 +445,7 @@ export const exportReportDetail = (date_from, date_to) => {
 export const exportReportOverview = (date_from, date_to) => {
   return (dispatch) => {
     return api()
-      .get(`io/qc_overview_export`)
+      .get(`io/qc_overview_export?date_from=${date_from}&date_to=${date_to}`)
       .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
         downloadXlsFromBase64(res.data, 'export-overview', 'xls');
