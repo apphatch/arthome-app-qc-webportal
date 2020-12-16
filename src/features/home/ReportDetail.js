@@ -18,7 +18,7 @@ import {
 } from 'antd';
 import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { getReportDetail, exportToExcel } from './redux/actions';
+import { getReportDetail, exportReportDetail } from './redux/actions';
 import { random as fakerRandom } from 'faker';
 
 const { RangePicker } = DatePicker;
@@ -133,7 +133,7 @@ const ReportDetail = () => {
       date_from = moment.utc(startenddate[0]).format('DD/MM/YYYY');
       date_to = moment.utc(startenddate[1]).format('DD/MM/YYYY');
     }
-    dispatch(exportToExcel(date_from, date_to));
+    dispatch(exportReportDetail(date_from, date_to));
   };
 
   return (

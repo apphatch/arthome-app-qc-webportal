@@ -423,7 +423,7 @@ const downloadShopTemplate = () => {
   };
 };
 
-export const exportToExcel = (date_from, date_to) => {
+export const exportReportDetail = (date_from, date_to) => {
   return (dispatch) => {
     return api()
       .get(`io/qc_export?date_from=${date_from}&date_to=${date_to}`)
@@ -461,7 +461,7 @@ const homeActions = {
   downloadCheckListTemplate,
   downloadChecklistItemsTemplate,
   downloadShopTemplate,
-  exportToExcel,
+  exportReportDetail,
 };
 
 export default homeActions;
