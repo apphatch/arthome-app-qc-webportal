@@ -81,7 +81,7 @@ const ReportOverview = () => {
   };
 
   const exportExcel = () => {
-    dispatch(exportReportDetail());
+    dispatch(exportReportOverview());
   };
 
   return (
