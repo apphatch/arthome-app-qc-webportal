@@ -3,7 +3,7 @@ import moment from 'moment';
 import { Row, Col, Card, Table, Button, Form, Space, DatePicker, Typography, Select } from 'antd';
 import { SearchOutlined, DownloadOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { getReportOverview } from './redux/actions';
+import { getReportOverview, exportReportOverview } from './redux/actions';
 import { random as fakerRandom } from 'faker';
 
 const { RangePicker } = DatePicker;
@@ -80,6 +80,10 @@ const ReportOverview = () => {
     dispatch(getReportOverview(date_from, date_to));
   };
 
+  const exportExcel = () => {
+    dispatch(exportReportDetail());
+  };
+
   return (
     <Row>
       <Col span={24}>
@@ -154,7 +158,12 @@ const ReportOverview = () => {
                         <Button icon={<SearchOutlined />} disabled={loading} htmlType="submit">
                           Tìm kiếm
                         </Button>
-                        <Button icon={<DownloadOutlined />} type="primary" disabled={loading}>
+                        <Button
+                          icon={<DownloadOutlined />}
+                          type="primary"
+                          disabled={loading}
+                          onClick={exportExcel}
+                        >
                           Export to Excel
                         </Button>
                       </Space>

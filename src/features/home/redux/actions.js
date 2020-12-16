@@ -429,7 +429,26 @@ export const exportReportDetail = (date_from, date_to) => {
       .get(`io/qc_export?date_from=${date_from}&date_to=${date_to}`)
       .then((res) => {
         dispatch(authActions.updateAuthorization(res.headers));
-        downloadXlsFromBase64(res.data, 'export', 'xls');
+        downloadXlsFromBase64(res.data, 'export-detail', 'xls');
+      })
+      .catch((error) => {
+        if (error.response) {
+          const { status } = error.response;
+          if (status === 401 || status === 500) {
+            dispatch(authActions.logout());
+          }
+        }
+      });
+  };
+};
+
+export const exportReportOverview = (date_from, date_to) => {
+  return (dispatch) => {
+    return api()
+      .get(`io/qc_overview_export`)
+      .then((res) => {
+        dispatch(authActions.updateAuthorization(res.headers));
+        downloadXlsFromBase64(res.data, 'export-overview', 'xls');
       })
       .catch((error) => {
         if (error.response) {
@@ -462,6 +481,7 @@ const homeActions = {
   downloadChecklistItemsTemplate,
   downloadShopTemplate,
   exportReportDetail,
+  exportReportOverview,
 };
 
 export default homeActions;
