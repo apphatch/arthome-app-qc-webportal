@@ -9,7 +9,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.8",
     "antd": "^4.7.1",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "connected-react-router": "^6.8.0",
     "craco-less": "^1.17.0",
     "faker": "^5.1.0",
